@@ -323,19 +323,27 @@
     // 年度の自動取得・表示
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // マウスホバーで説明文を切り替えるスクリプト
+    // タップ（クリック）およびホバーで説明文を切り替えるスクリプト
     const serviceItems = document.querySelectorAll('.service-item');
     const descriptions = document.querySelectorAll('.description-text');
 
-    serviceItems.forEach(item => {
-      item.addEventListener('mouseenter', () => {
-        serviceItems.forEach(i => i.classList.remove('active'));
-        descriptions.forEach(d => d.classList.remove('active'));
+    function activateItem(item) {
+      // すべての選択・表示状態を解除
+      serviceItems.forEach(i => i.classList.remove('active'));
+      descriptions.forEach(d => d.classList.remove('active'));
 
-        item.classList.add('active');
-        const targetId = item.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
-      });
+      // 選択された項目と対応する説明文をアクティブにする
+      item.classList.add('active');
+      const targetId = item.getAttribute('data-target');
+      document.getElementById(targetId).classList.add('active');
+    }
+
+    serviceItems.forEach(item => {
+      // スマホのタップ＆PCのクリックに対応
+      item.addEventListener('click', () => activateItem(item));
+
+      // PCでのマウスホバー操作にも対応
+      item.addEventListener('mouseenter', () => activateItem(item));
     });
   </script>
 </body>
