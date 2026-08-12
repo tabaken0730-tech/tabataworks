@@ -176,18 +176,29 @@
       position: relative;
     }
 
-    /* お問い合わせ */
-    .contact-section {
+/* フッター（お問い合わせ＆コピーライト） */
+    footer {
       margin-top: 80px;
       padding-top: 30px;
-      border: none;
-      font-size: 1.1rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.08); /* 上部にうっすら境界線 */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.95rem;
+      color: var(--sub-color);
     }
 
     .contact-link {
       color: var(--sub-color);
       text-decoration: none;
       cursor: not-allowed;
+    }
+
+    .copyright {
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
     }
 
     /* レスポンシブ対応 */
@@ -301,23 +312,26 @@
     </div>
   </main>
 
-  <!-- お問い合わせ -->
-  <footer class="contact-section">
+  <!-- フッター -->
+  <footer>
     <span class="contact-link">お問い合わせ (準備中)</span>
+    <p class="copyright">&copy; <span id="current-year"></span> TABATAWORKS All Rights Reserved.</p>
   </footer>
 
-  <!-- マウスホバーで説明文を切り替えるスクリプト -->
+  <!-- スクリプト -->
   <script>
+    // 年度の自動取得・表示
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // マウスホバーで説明文を切り替えるスクリプト
     const serviceItems = document.querySelectorAll('.service-item');
     const descriptions = document.querySelectorAll('.description-text');
 
     serviceItems.forEach(item => {
       item.addEventListener('mouseenter', () => {
-        // すべての選択・表示状態を解除
         serviceItems.forEach(i => i.classList.remove('active'));
         descriptions.forEach(d => d.classList.remove('active'));
 
-        // ホバーされた項目と対応する説明文をアクティブにする
         item.classList.add('active');
         const targetId = item.getAttribute('data-target');
         document.getElementById(targetId).classList.add('active');
