@@ -16,8 +16,8 @@
     :root {
       --bg-color: #f2f2f2;      /* 薄いグレー背景 */
       --text-color: #4a4a4a;    /* 上品な薄めグレー */
-      --accent-color: #ba3c25;  /* ホバー時のアクセントカラー */
-      --sub-color: #888888;     /* サブ文字色 */
+      --accent-color: #ba3c25;  /* アクセント（オレンジ/赤茶） */
+      --sub-color: #555555;     /* サブ文字色 */
     }
 
     * {
@@ -32,7 +32,7 @@
       color: var(--text-color);
       line-height: 1.8;
       font-size: 18px;
-      padding: 50px 8vw 120px 8vw;
+      padding: 50px 8vw 60px 8vw;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -41,18 +41,22 @@
       overflow-x: hidden;
     }
 
-    /* サイト下部 全幅の杉林シルエット背景 */
+    /* サイト下部 背景画像（最背面固定） */
     .forest-bg {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100vw;
-      height: auto;
-      max-height: 25vh;
+      height: 25vh;
+      min-height: 140px;
       pointer-events: none;
-      z-index: 0;
-      opacity: 0.18; /* 落ち着いた存在感の濃さに調整 */
-      fill: var(--text-color); /* 文字と同じグレー */
+      z-index: -1; /* コンテンツの背後に配置 */
+      opacity: 0.35;
+      
+      background-image: url('forest.png');
+      background-size: cover;
+      background-position: bottom center;
+      background-repeat: no-repeat;
     }
 
     /* コンテンツのレイヤー位置調整 */
@@ -71,7 +75,7 @@
       font-weight: 600;
       letter-spacing: -0.02em;
       display: inline-block;
-      transform: scaleX(0.85); /* 社名を長体風に補正 */
+      transform: scaleX(0.85);
       transform-origin: left center;
     }
 
@@ -96,10 +100,13 @@
       font-weight: 600;
       padding: 12px 0;
       color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .clickable-parent {
-      display: inline-block;
+      display: inline-flex;
       cursor: pointer;
       text-decoration: none;
       transition: color 0.3s ease;
@@ -109,21 +116,42 @@
       color: var(--accent-color);
     }
 
+    /* 親項目用の樹木アイコン */
+    .parent-tree-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* 小項目用の無地オレンジ四角アイコン */
+    .sub-square-icon {
+      width: 8px;
+      height: 8px;
+      flex-shrink: 0;
+      fill: var(--accent-color);
+    }
+
     /* 子項目（ツリー構造の各業務） */
     .tree-sub-list {
       list-style: none;
       padding-left: 1.2rem;
       margin-bottom: 15px;
-      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      border-left: none;
     }
 
     .service-item {
       font-size: 1.05rem;
       font-weight: 600;
-      padding: 8px 0 8px 12px;
+      padding: 8px 0;
       cursor: pointer;
       transition: color 0.3s ease;
-      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .service-item:hover,
@@ -156,29 +184,29 @@
       position: relative;
     }
 
-    /* フッター（コピーライト） */
+    /* ページの最下部に配置するフッター */
     footer {
-      margin-top: 80px;
+      margin-top: 60px;
       padding-top: 20px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: flex-start;
       align-items: center;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       color: var(--sub-color);
     }
 
     .copyright {
-      font-size: 0.85rem;
-      letter-spacing: -0.02em;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       display: inline-block;
       transform: scaleX(0.9);
-      transform-origin: right center;
+      transform-origin: left center;
     }
 
-    /* レスポンシブ対応 */
+    /* レスポンシブ対応（スマホ・タブレット表示時） */
     @media (max-width: 768px) {
       body {
-        padding: 30px 20px 100px 20px;
+        padding: 30px 20px 50px 20px;
         font-size: 16px;
       }
 
@@ -203,16 +231,17 @@
         min-height: 120px;
       }
 
-      .forest-bg {
-        max-height: 18vh;
+      footer {
+        margin-top: 40px;
+        justify-content: center; /* スマホ表示時は中央揃え */
       }
 
       .copyright {
-        transform-origin: left center;
+        transform-origin: center center;
       }
 
-      footer {
-        justify-content: center;
+      .forest-bg {
+        height: 18vh;
       }
     }
   </style>
@@ -228,15 +257,69 @@
   <main class="main-container">
     <!-- 左側：ツリー形式メニュー -->
     <div class="service-list">
-      <div class="parent-item">業務内容</div>
+      <!-- 親項目1：業務内容 -->
+      <div class="parent-item">
+        <svg class="parent-tree-icon" viewBox="0 0 100 100">
+          <rect x="6" y="6" width="88" height="88" rx="2" stroke-width="7"/>
+          <path d="M 50 94 Q 50 70 50 55" stroke-width="7"/>
+          <path d="M 50 55 C 45 42 28 35 6 35" stroke-width="6"/>
+          <path d="M 50 55 C 55 42 72 35 94 35" stroke-width="6"/>
+          <path d="M 44 48 C 30 32 18 20 6 18" stroke-width="5"/>
+          <path d="M 56 48 C 70 32 82 20 94 18" stroke-width="5"/>
+          <path d="M 32 38 C 25 24 16 12 6 12" stroke-width="5"/>
+          <path d="M 68 38 C 75 24 84 12 94 12" stroke-width="5"/>
+          <path d="M 50 55 C 45 32 35 18 25 6" stroke-width="5"/>
+          <path d="M 50 55 C 55 32 65 18 75 6" stroke-width="5"/>
+          <path d="M 50 40 L 50 6" stroke-width="5"/>
+        </svg>
+        <span>業務内容</span>
+      </div>
+
+      <!-- 子項目リスト（無地オレンジ四角） -->
       <ul class="tree-sub-list">
-        <li class="service-item active" data-target="desc-1">印刷物のデザイン・制作</li>
-        <li class="service-item" data-target="desc-2">学会・イベントの運営お手伝い</li>
-        <li class="service-item" data-target="desc-3">名入れグッズ・ノベルティ制作</li>
-        <li class="service-item" data-target="desc-4">交通広告・折込広告などのPR掲載</li>
+        <li class="service-item active" data-target="desc-1">
+          <svg class="sub-square-icon" viewBox="0 0 10 10">
+            <rect width="10" height="10"/>
+          </svg>
+          <span>印刷物のデザイン・制作</span>
+        </li>
+        <li class="service-item" data-target="desc-2">
+          <svg class="sub-square-icon" viewBox="0 0 10 10">
+            <rect width="10" height="10"/>
+          </svg>
+          <span>学会・イベントの運営お手伝い</span>
+        </li>
+        <li class="service-item" data-target="desc-3">
+          <svg class="sub-square-icon" viewBox="0 0 10 10">
+            <rect width="10" height="10"/>
+          </svg>
+          <span>名入れグッズ・ノベルティ制作</span>
+        </li>
+        <li class="service-item" data-target="desc-4">
+          <svg class="sub-square-icon" viewBox="0 0 10 10">
+            <rect width="10" height="10"/>
+          </svg>
+          <span>交通広告・折込広告などのPR掲載</span>
+        </li>
       </ul>
-      <!-- お問い合わせ（別タブで開くリンク） -->
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLScr7axB1BI-SZwLrKgu1kRn0yKVF-z19w-kNA3POx9RZ9VvMA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="parent-item clickable-parent">お問い合わせ</a>
+
+      <!-- 親項目2：お問い合わせ（別タブリンク） -->
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScr7axB1BI-SZwLrKgu1kRn0yKVF-z19w-kNA3POx9RZ9VvMA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="parent-item clickable-parent">
+        <svg class="parent-tree-icon" viewBox="0 0 100 100">
+          <rect x="6" y="6" width="88" height="88" rx="2" stroke-width="7"/>
+          <path d="M 50 94 Q 50 70 50 55" stroke-width="7"/>
+          <path d="M 50 55 C 45 42 28 35 6 35" stroke-width="6"/>
+          <path d="M 50 55 C 55 42 72 35 94 35" stroke-width="6"/>
+          <path d="M 44 48 C 30 32 18 20 6 18" stroke-width="5"/>
+          <path d="M 56 48 C 70 32 82 20 94 18" stroke-width="5"/>
+          <path d="M 32 38 C 25 24 16 12 6 12" stroke-width="5"/>
+          <path d="M 68 38 C 75 24 84 12 94 12" stroke-width="5"/>
+          <path d="M 50 55 C 45 32 35 18 25 6" stroke-width="5"/>
+          <path d="M 50 55 C 55 32 65 18 75 6" stroke-width="5"/>
+          <path d="M 50 40 L 50 6" stroke-width="5"/>
+        </svg>
+        <span>お問い合わせ</span>
+      </a>
     </div>
 
     <!-- 右側：説明文表示エリア -->
@@ -245,7 +328,7 @@
         印刷物は企画・デザインから製本・発送まで丸ごとお任せください。「デザインだけ」「編集だけ」といったピンポイントのご依頼や、論文などのハードカバー製本、手元にある冊子の裁断・スキャン（データ化）まで柔軟に対応します。
       </p>
       <p id="desc-2" class="description-text">
-        学会や研究会、各種イベントの準備から当日までしっかり伴走します。開催案内や特設WEBサイトの立ち上げ、プログラム・要旨集の作成はもちろん、会場の看板設置、参加証の準備、ポスターセッション用パネルのレンタル手配まで、必要な業務をまとめて引き受けます。
+        学会や研究会、各種イベントの準備から当日までしっかり伴走します。開催案内や特設WEBサイトの立ち上げ、プログラム・要旨集の作成はもちろん、会場の看板設置、参加証の準備、ポスターセッション用パネルのレンタル手配まで、必要な業務をまとめて引き受けます。<br>※対応エリアは仙台市内です
       </p>
       <p id="desc-3" class="description-text">
         イベントのノベルティや企業のPRにぴったりな名入れグッズを制作します。定番のバッグやペンなどの文具類をはじめ、クリアファイルやマグカップまで、デザインから完成・納品まで幅広く対応。「こんなもの作れる？」もお気軽にご相談ください。
@@ -256,39 +339,13 @@
     </div>
   </main>
 
-  <!-- フッター -->
+  <!-- ページの最下部（コンテンツ全体の後）に置くフッター -->
   <footer>
     <p class="copyright">&copy; <span id="current-year"></span> TABATAWORKS All Rights Reserved.</p>
   </footer>
 
-  <!-- 画面下部：密度の高い杉林シルエット背景 (SVG) -->
-  <svg class="forest-bg" viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="
-      M 0,300 L 0,220
-      L 3,212 L 1,215 L 5,200 L 2,203 L 8,185 L 4,188 L 10,170 L 6,173 L 14,150 L 9,154 L 18,130 L 12,135 L 22,100 L 32,135 L 26,130 L 35,154 L 30,150 L 38,173 L 34,170 L 40,188 L 36,185 L 42,203 L 39,200 L 43,215 L 41,212 L 45,225
-      L 48,210 L 46,213 L 52,190 L 49,193 L 56,170 L 52,174 L 60,145 L 55,150 L 65,120 L 59,125 L 70,85 L 81,125 L 75,120 L 85,150 L 80,145 L 88,174 L 84,170 L 91,193 L 88,190 L 94,213 L 92,210 L 98,225
-      L 102,205 L 100,208 L 106,185 L 103,188 L 110,165 L 106,169 L 114,145 L 110,149 L 118,125 L 126,149 L 122,145 L 130,169 L 126,165 L 133,188 L 130,185 L 136,208 L 134,205 L 140,220
-      L 145,195 L 142,199 L 150,170 L 146,174 L 155,140 L 150,145 L 160,110 L 154,116 L 168,70 L 182,116 L 176,110 L 186,145 L 181,140 L 190,174 L 186,170 L 194,199 L 191,195 L 200,230
-      L 205,210 L 202,213 L 210,190 L 206,193 L 215,165 L 211,169 L 220,140 L 215,145 L 225,115 L 235,145 L 230,140 L 239,169 L 235,165 L 244,193 L 240,190 L 248,213 L 245,210 L 252,225
-      L 258,190 L 254,194 L 262,165 L 257,170 L 268,135 L 262,141 L 275,95 L 268,102 L 282,50 L 296,102 L 289,95 L 302,141 L 296,135 L 307,170 L 302,165 L 310,194 L 306,190 L 315,225
-      L 320,200 L 317,203 L 324,180 L 320,183 L 328,155 L 324,159 L 332,130 L 328,134 L 338,105 L 348,134 L 344,130 L 352,159 L 348,155 L 356,183 L 352,180 L 359,203 L 356,200 L 362,220
-      L 368,195 L 364,199 L 372,170 L 367,174 L 378,140 L 372,145 L 385,100 L 378,107 L 392,60 L 406,107 L 399,100 L 412,145 L 406,140 L 417,174 L 412,170 L 420,199 L 416,195 L 425,230
-      L 430,210 L 427,213 L 434,190 L 430,193 L 438,168 L 434,172 L 442,145 L 438,149 L 446,120 L 454,149 L 450,145 L 458,172 L 454,168 L 462,193 L 458,190 L 465,213 L 462,210 L 470,225
-      L 476,185 L 471,190 L 482,155 L 476,160 L 488,120 L 481,127 L 495,80 L 488,87 L 502,40 L 516,87 L 509,80 L 523,127 L 516,120 L 528,160 L 522,155 L 533,190 L 528,185 L 538,225
-      L 542,205 L 539,208 L 546,185 L 542,188 L 550,160 L 545,164 L 555,130 L 550,135 L 560,105 L 570,135 L 565,130 L 575,164 L 570,160 L 578,188 L 574,185 L 581,208 L 578,205 L 585,220
-      L 590,195 L 586,199 L 595,165 L 589,170 L 600,130 L 593,136 L 608,85 L 600,92 L 615,45 L 630,92 L 622,85 L 637,136 L 630,130 L 641,170 L 635,165 L 644,199 L 640,195 L 650,230
-      L 655,210 L 652,213 L 660,190 L 656,193 L 664,168 L 660,172 L 668,145 L 664,149 L 672,120 L 680,149 L 676,145 L 684,172 L 680,168 L 688,193 L 684,190 L 691,213 L 688,210 L 695,225
-      L 702,185 L 697,190 L 708,150 L 702,155 L 715,110 L 708,117 L 722,65 L 714,73 L 730,20 L 746,73 L 738,65 L 752,117 L 745,110 L 758,155 L 752,150 L 763,190 L 758,185 L 768,225
-      L 774,200 L 770,203 L 778,178 L 774,181 L 782,150 L 777,154 L 788,120 L 782,125 L 792,90 L 802,125 L 796,120 L 807,154 L 802,150 L 810,181 L 806,178 L 814,203 L 810,200 L 818,220
-      L 824,190 L 820,194 L 828,160 L 822,165 L 832,125 L 825,131 L 838,80 L 830,87 L 845,35 L 860,87 L 852,80 L 865,131 L 858,125 L 868,165 L 862,160 L 870,194 L 866,190 L 875,230
-      L 880,205 L 877,208 L 884,185 L 880,188 L 888,160 L 884,164 L 892,135 L 888,139 L 896,110 L 904,139 L 900,135 L 908,164 L 904,160 L 912,188 L 908,185 L 915,208 L 912,205 L 920,225
-      L 926,185 L 921,190 L 932,150 L 925,156 L 938,110 L 930,117 L 945,60 L 937,68 L 952,15 L 967,68 L 959,60 L 974,117 L 966,110 L 979,156 L 972,150 L 983,190 L 978,185 L 988,225
-      L 994,200 L 990,203 L 998,175 L 994,178 L 1002,145 L 997,149 L 1008,115 L 1002,120 L 1012,85 L 1022,120 L 1016,115 L 1027,149 L 1022,145 L 1030,178 L 1026,175 L 1034,203 L 1030,200 L 1038,220
-      L 1045,190 L 1040,194 L 1050,155 L 1043,160 L 1056,115 L 1048,122 L 1062,70 L 1054,77 L 1070,25 L 1086,77 L 1078,70 L 1092,122 L 1084,115 L 1097,160 L 1090,155 L 1100,194 L 1095,190 L 1105,230
-      L 1112,205 L 1108,208 L 1116,180 L 1112,183 L 1120,155 L 1115,159 L 1125,125 L 1120,129 L 1130,95 L 1140,129 L 1135,125 L 1145,159 L 1140,155 L 1148,183 L 1144,180 L 1152,208 L 1148,205 L 1156,220
-      L 1162,190 L 1157,195 L 1168,150 L 1161,156 L 1174,110 L 1166,117 L 1182,60 L 1198,117 L 1190,110 L 1200,140
-      L 1200,300 Z" />
-  </svg>
+  <!-- 画面下部：背景画像エリア（forest.png） -->
+  <div class="forest-bg"></div>
 
   <!-- スクリプト -->
   <script>
