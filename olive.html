@@ -183,17 +183,17 @@
       position: relative;
     }
 
-    /* ページの最下部に配置するフッター */
+    /* ページの最下部フッター（右下固定） */
     footer {
-      margin-top: 60px;
-      padding-top: 20px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+      position: fixed;
+      bottom: 20px; /* 下からの距離 */
+      right: 5vw;   /* 右からの距離（画面幅に合わせた余白） */
+      z-index: 10;  /* 背景画像より手前に表示 */
+      margin-top: 0;
+      padding-top: 0;
       font-size: 0.85rem;
       color: var(--sub-color);
     }
-
     .copyright {
       font-weight: 600;
       letter-spacing: -0.01em;
@@ -230,9 +230,12 @@
         min-height: 120px;
       }
 
-      footer {
-        margin-top: 40px;
-        justify-content: center;
+     footer {
+        position: fixed;
+        bottom: 15px;
+        right: 20px;
+        margin-top: 0;
+        justify-content: flex-end; /* 右寄せ */
       }
 
       .copyright {
