@@ -47,15 +47,18 @@
   bottom: 0;
   left: 0;
   width: 100vw;
-  height: 200px; /* 画像の高さに合わせて調整 */
+  height: 220px;
   pointer-events: none;
   z-index: -1;
   opacity: 0.35;
 
   background-image: url('forest.png');
-  background-repeat: repeat-x;      /* 横方向にのみ繰り返し */
-  background-position: bottom left; /* 基準を『下端』に固定 */
-  background-size: auto 100%;       /* 高さを枠に100%合わせ、切り取りを防ぐ */
+  background-repeat: repeat-x;
+  background-position: bottom left;
+  background-size: auto 100%;
+
+  /* 画像の中の白を自動的に背景色（グレー）に馴染ませる設定 */
+  mix-blend-mode: multiply;
 }
 
     /* コンテンツのレイヤー位置調整 */
