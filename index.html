@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TABATAWORKS</title>
-<!-- アイコン（ファビコン）の埋め込み -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23f2f2f2'/%3E%3Crect x='8' y='8' width='84' height='84' rx='8' fill='none' stroke='%234a4a4a' stroke-width='6'/%3E%3Ctext x='18' y='68' font-family='Georgia, serif' font-size='62' font-weight='bold' fill='%234a4a4a'%3ET%3C/text%3E%3Ctext x='48' y='76' font-family='Georgia, serif' font-size='40' font-weight='bold' fill='%234a4a4a'%3EW%3C/text%3E%3C/svg%3E">
-<!-- セリフ体（明朝体）フォントの読み込み -->
+  <title>TABATAWORKS</title>
+  <!-- アイコン（ファビコン）の埋め込み -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23f2f2f2'/%3E%3Crect x='8' y='8' width='84' height='84' rx='8' fill='none' stroke='%234a4a4a' stroke-width='6'/%3E%3Ctext x='18' y='68' font-family='Georgia, serif' font-size='62' font-weight='bold' fill='%234a4a4a'%3ET%3C/text%3E%3Ctext x='48' y='76' font-family='Georgia, serif' font-size='40' font-weight='bold' fill='%234a4a4a'%3EW%3C/text%3E%3C/svg%3E">
+  <!-- セリフ体（明朝体）フォントの読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
       color: var(--text-color);
       line-height: 1.8;
       font-size: 18px;
-      padding: 50px 8vw;
+      padding: 50px 8vw 120px 8vw;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -41,68 +41,27 @@
       overflow-x: hidden;
     }
 
-    /* 背景のツタ用SVGコンテナ（左側に配置） */
-    .ivy-bg {
+    /* サイト下部 全幅の杉林シルエット背景（画像配置） */
+    .forest-bg {
       position: fixed;
       bottom: 0;
       left: 0;
-      width: 45vw;
-      height: 100vh;
+      width: 100vw;
+      height: 22vh; /* シルエットの高さ調整 */
       pointer-events: none;
       z-index: 0;
-      opacity: 0.18;
-    }
-
-    /* ツタの線の描画アニメーション */
-    .ivy-path {
-      fill: none;
-      stroke: #2b2b2b;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 2000;
-      stroke-dashoffset: 2000;
-    }
-
-    /* --- アニメーションタイムラインの最適化 --- */
-    /* 1. メイン幹（全体の流れ：0s〜5.0s） */
-    .branch-main {
-      animation: growIvy 5.0s cubic-bezier(0.25, 1, 0.5, 1) forwards 0s;
-    }
-
-    /* 2. 中部派生枝1（幹が通過する2.0sから開始、1.2sかけて伸ばす → 3.2s完了） */
-    .branch-sub1 {
-      animation: growIvy 1.2s ease-out forwards 2.0s;
-    }
-
-    /* 3. 上部派生枝2（幹が通過する3.8sから開始、1.2sかけて伸ばす → 5.0s完了） */
-    .branch-sub2 {
-      animation: growIvy 1.2s ease-out forwards 3.8s;
-    }
-
-    /* 葉っぱのフェードイン */
-    .ivy-leaf {
-      fill: #2b2b2b;
-      opacity: 0;
-      animation: fadeInLeaf 0.8s ease-out forwards;
-    }
-
-    /* --- 芽吹きタイミング（枝が伸びきった直後にセット） --- */
-    .leaf-step1 { animation-delay: 1.8s; } /* 最下部1枚葉：幹通過直後 */
-    .leaf-step2 { animation-delay: 3.2s; } /* 中部双葉：派生枝1が伸びきった瞬間 (2.0s + 1.2s) */
-    .leaf-step3 { animation-delay: 3.5s; } /* 中上1枚葉：幹通過直後 */
-    .leaf-step4 { animation-delay: 5.0s; } /* 上部双葉：派生枝2が伸びきった瞬間 (3.8s + 1.2s) */
-
-    @keyframes growIvy {
-      to {
-        stroke-dashoffset: 0;
-      }
-    }
-
-    @keyframes fadeInLeaf {
-      to {
-        opacity: 0.75;
-      }
+      opacity: 0.25; /* 自然になじむ薄さに設定 */
+      
+      /* 画像の配置と文字色（#4a4a4a）への着色制御 */
+      background-color: var(--text-color);
+      -webkit-mask-image: url('forest.png');
+      mask-image: url('forest.png');
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      -webkit-mask-position: bottom center;
+      mask-position: bottom center;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
     }
 
     /* コンテンツのレイヤー位置調整 */
@@ -120,6 +79,9 @@
       font-size: 2.8rem;
       font-weight: 600;
       letter-spacing: -0.02em;
+      display: inline-block;
+      transform: scaleX(0.85); /* 社名を長体風に補正 */
+      transform-origin: left center;
     }
 
     /* メインコンテンツ（2カラムレイアウト） */
@@ -137,11 +99,37 @@
       width: 45%;
     }
 
-    .service-item {
+    /* 親項目（業務内容 / お問い合わせ） */
+    .parent-item {
       font-size: 1.25rem;
       font-weight: 600;
-      padding: 16px 0;
-      border: none;
+      padding: 12px 0;
+      color: var(--text-color);
+    }
+
+    .clickable-parent {
+      display: inline-block;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .clickable-parent:hover {
+      color: var(--accent-color);
+    }
+
+    /* 子項目（ツリー構造の各業務） */
+    .tree-sub-list {
+      list-style: none;
+      padding-left: 1.2rem;
+      margin-bottom: 15px;
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .service-item {
+      font-size: 1.05rem;
+      font-weight: 600;
+      padding: 8px 0 8px 12px;
       cursor: pointer;
       transition: color 0.3s ease;
       position: relative;
@@ -156,7 +144,7 @@
     .description-display {
       width: 50%;
       min-height: 200px;
-      padding-top: 16px;
+      padding-top: 12px;
     }
 
     .description-text {
@@ -167,6 +155,7 @@
       transition: opacity 0.4s ease, transform 0.4s ease;
       transform: translateY(10px);
       position: absolute;
+      width: 100%;
     }
 
     .description-text.active {
@@ -176,35 +165,29 @@
       position: relative;
     }
 
-/* フッター（お問い合わせ＆コピーライト） */
+    /* フッター（コピーライト） */
     footer {
       margin-top: 80px;
-      padding-top: 30px;
-      border-top: 1px solid rgba(0, 0, 0, 0.08); /* 上部にうっすら境界線 */
+      padding-top: 20px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
       font-size: 0.95rem;
       color: var(--sub-color);
     }
 
-    .contact-link {
-      color: var(--sub-color);
-      text-decoration: none;
-      cursor: not-allowed;
-    }
-
     .copyright {
       font-size: 0.85rem;
-      letter-spacing: 0.05em;
+      letter-spacing: -0.02em;
+      display: inline-block;
+      transform: scaleX(0.9);
+      transform-origin: right center;
     }
 
     /* レスポンシブ対応 */
     @media (max-width: 768px) {
       body {
-        padding: 30px 20px;
+        padding: 30px 20px 100px 20px;
         font-size: 16px;
       }
 
@@ -222,127 +205,94 @@
       }
 
       .service-item {
-        font-size: 1.15rem;
+        font-size: 0.95rem;
       }
 
       .description-display {
         min-height: 120px;
       }
 
-      .ivy-bg {
-        width: 80vw;
+      .forest-bg {
+        height: 15vh;
+      }
+
+      .copyright {
+        transform-origin: left center;
+      }
+
+      footer {
+        justify-content: center;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 左側：ツタ背景（SVG） -->
-  <svg class="ivy-bg" viewBox="0 0 500 1000" preserveAspectRatio="xMinYMax slice">
-    
-    <!-- 綺麗な1枚葉の基本パーツ -->
-    <defs>
-      <path id="perfect-leaf" d="M 0,0 Q 30,-20 40,0 Q 15,15 0,0 Z" />
-    </defs>
-
-    <!-- メイン幹 -->
-    <path class="ivy-path branch-main" d="M 50, 1050 C 220, 820 -20, 600 160, 380 C 215, 290 140, 110 60, -50" />
-    
-    <!-- 支線1 -->
-    <path class="ivy-path branch-sub1" d="M 99, 499 C 135, 470 165, 480 195, 450" />
-
-    <!-- 支線2 -->
-    <path class="ivy-path branch-sub2" d="M 137, 121 C 158, 105 172, 115 190, 95" />
-
-    <!-- ★ 葉っぱの配置 ★ -->
-    
-    <!-- 1) 最下部：1枚葉 -->
-    <use href="#perfect-leaf" class="ivy-leaf leaf-step1" transform="translate(93, 645) rotate(-140) scale(0.9)" />
-
-    <!-- 2) 中部：2枚葉（さらに10度時計回りに回転） -->
-    <g class="ivy-leaf leaf-step2">
-      <!-- 左向きの葉 (-165 -> -155) -->
-      <use href="#perfect-leaf" transform="translate(195, 450) rotate(-155) scale(0.85)" />
-      <!-- 右向きの葉 (5 -> 15) -->
-      <use href="#perfect-leaf" transform="translate(195, 450) rotate(15) scale(0.85)" />
-    </g>
-
-    <!-- 3) 中上部：一番上のお手本1枚葉 -->
-    <use href="#perfect-leaf" class="ivy-leaf leaf-step3" transform="translate(170, 240) rotate(-33) scale(1.0)" />
-
-    <!-- 4) 上部：2枚葉（さらに10度時計回りに回転） -->
-    <g class="ivy-leaf leaf-step4">
-      <!-- 左向きの葉 (-165 -> -155) -->
-      <use href="#perfect-leaf" transform="translate(190, 95) rotate(-155) scale(0.85)" />
-      <!-- 右向きの葉 (5 -> 15) -->
-      <use href="#perfect-leaf" transform="translate(190, 95) rotate(15) scale(0.85)" />
-    </g>
-
-  </svg>
-
   <!-- 社名 -->
   <header>
     <h1 class="site-title">TABATAWORKS</h1>
   </header>
 
-<!-- メインコンテンツ -->
+  <!-- メインコンテンツ -->
   <main class="main-container">
-    <!-- 左側：項目 -->
-    <ul class="service-list">
-      <li class="service-item active" data-target="desc-1">印刷・製本ソリューション</li>
-      <li class="service-item" data-target="desc-2">学会・研究会 運営総合サポート</li>
-      <li class="service-item" data-target="desc-3">オリジナル名入れノベルティ</li>
-      <li class="service-item" data-target="desc-4">交通広告・各種媒体掲載</li>
-    </ul>
+    <!-- 左側：ツリー形式メニュー -->
+    <div class="service-list">
+      <div class="parent-item">業務内容</div>
+      <ul class="tree-sub-list">
+        <li class="service-item active" data-target="desc-1">印刷物のデザイン・制作</li>
+        <li class="service-item" data-target="desc-2">学会・イベントの運営お手伝い</li>
+        <li class="service-item" data-target="desc-3">名入れグッズ・ノベルティ制作</li>
+        <li class="service-item" data-target="desc-4">交通広告・折込広告などのPR掲載</li>
+      </ul>
+      <!-- お問い合わせ（別タブで開くリンク） -->
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScr7axB1BI-SZwLrKgu1kRn0yKVF-z19w-kNA3POx9RZ9VvMA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="parent-item clickable-parent">お問い合わせ</a>
+    </div>
 
-    <!-- 右側：説明文 -->
+    <!-- 右側：説明文表示エリア -->
     <div class="description-display">
       <p id="desc-1" class="description-text active">
-        印刷物全般のデザイン・制作・発送までワンストップでご対応します。論文などのハードカバー製本もご対応します。
+        印刷物は企画・デザインから製本・発送まで丸ごとお任せください。「デザインだけ」「編集だけ」といったピンポイントのご依頼や、論文などのハードカバー製本、手元にある冊子の裁断・スキャン（データ化）まで柔軟に対応します。
       </p>
       <p id="desc-2" class="description-text">
-        学会・研究会、その他イベントの開催案内やWEBサイトの構築から、プログラム・要旨集の編集、会場看板の製作・設置まで、大会運営に必要な業務を一貫して請け負います。
+        学会や研究会、各種イベントの準備から当日までしっかり伴走します。開催案内や特設WEBサイトの立ち上げ、プログラム・要旨集の作成はもちろん、会場の看板設置、参加証の準備、ポスターセッション用パネルのレンタル手配まで、必要な業務をまとめて引き受けます。
       </p>
       <p id="desc-3" class="description-text">
-        バッグ、文具類、クリアファイル、マグカップなど、イベントや企業ノベルティに最適な名入れグッズのデザインから製作までご対応します。
+        イベントのノベルティや企業のPRにぴったりな名入れグッズを制作します。定番のバッグやペンなどの文具類をはじめ、クリアファイルやマグカップまで、デザインから完成・納品まで幅広く対応。「こんなもの作れる？」もお気軽にご相談ください。
       </p>
       <p id="desc-4" class="description-text">
-        仙台市交通局（バス・地下鉄）をはじめとする交通広告や各種媒体の選定から掲載手続きまで、効果的なPRをサポートします。
+        地域に届く効果的なPRをお手伝いします。仙台市交通局（バス・地下鉄）の交通広告や、河北新報への折込広告など、狙いたいターゲットに合わせた媒体の選定から面倒な掲載手続きまでスムーズにサポートします。
       </p>
     </div>
   </main>
 
   <!-- フッター -->
   <footer>
-    <span class="contact-link">お問い合わせ (準備中)</span>
     <p class="copyright">&copy; <span id="current-year"></span> TABATAWORKS All Rights Reserved.</p>
   </footer>
+
+  <!-- 画面下部：背景画像エリア -->
+  <div class="forest-bg"></div>
 
   <!-- スクリプト -->
   <script>
     // 年度の自動取得・表示
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // タップ（クリック）およびホバーで説明文を切り替えるスクリプト
+    // メニュー切り替えスクリプト（業務内容の4項目）
     const serviceItems = document.querySelectorAll('.service-item');
     const descriptions = document.querySelectorAll('.description-text');
 
     function activateItem(item) {
-      // すべての選択・表示状態を解除
       serviceItems.forEach(i => i.classList.remove('active'));
       descriptions.forEach(d => d.classList.remove('active'));
 
-      // 選択された項目と対応する説明文をアクティブにする
       item.classList.add('active');
       const targetId = item.getAttribute('data-target');
       document.getElementById(targetId).classList.add('active');
     }
 
     serviceItems.forEach(item => {
-      // スマホのタップ＆PCのクリックに対応
       item.addEventListener('click', () => activateItem(item));
-
-      // PCでのマウスホバー操作にも対応
       item.addEventListener('mouseenter', () => activateItem(item));
     });
   </script>
