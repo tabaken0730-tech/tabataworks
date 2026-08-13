@@ -41,27 +41,24 @@
       overflow-x: hidden;
     }
 
-    /* サイト下部 全幅の杉林シルエット背景（画像配置） */
+    /* サイト下部 全幅の杉林シルエット背景 */
     .forest-bg {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100vw;
-      height: 22vh; /* シルエットの高さ調整 */
+      height: 22vh;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.25; /* 自然になじむ薄さに設定 */
+      opacity: 0.35; /* 文字になじむ落ち着いた濃さに設定 */
       
-      /* 画像の配置と文字色（#4a4a4a）への着色制御 */
-      background-color: var(--text-color);
-      -webkit-mask-image: url('forest.png');
-      mask-image: url('forest.png');
-      -webkit-mask-size: 100% 100%;
-      mask-size: 100% 100%;
-      -webkit-mask-position: bottom center;
-      mask-position: bottom center;
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
+      background-image: url('forest.png');
+      background-size: 100% 100%;
+      background-position: bottom center;
+      background-repeat: no-repeat;
+      
+      /* 画像の黒い色を文字のグレー色へマイルドに変換 */
+      filter: opacity(0.7) contrast(1.2);
     }
 
     /* コンテンツのレイヤー位置調整 */
@@ -105,10 +102,13 @@
       font-weight: 600;
       padding: 12px 0;
       color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .clickable-parent {
-      display: inline-block;
+      display: inline-flex;
       cursor: pointer;
       text-decoration: none;
       transition: color 0.3s ease;
@@ -116,6 +116,14 @@
 
     .clickable-parent:hover {
       color: var(--accent-color);
+    }
+
+    /* 植物模様をあしらった四角アイコン */
+    .deco-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      fill: currentColor;
     }
 
     /* 子項目（ツリー構造の各業務） */
@@ -132,12 +140,25 @@
       padding: 8px 0 8px 12px;
       cursor: pointer;
       transition: color 0.3s ease;
-      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-item .deco-icon {
+      width: 14px;
+      height: 14px;
+      opacity: 0.7;
     }
 
     .service-item:hover,
     .service-item.active {
       color: var(--accent-color);
+    }
+
+    .service-item:hover .deco-icon,
+    .service-item.active .deco-icon {
+      opacity: 1;
     }
 
     /* 右側：説明文表示エリア */
@@ -237,15 +258,77 @@
   <main class="main-container">
     <!-- 左側：ツリー形式メニュー -->
     <div class="service-list">
-      <div class="parent-item">業務内容</div>
+      <!-- 親項目1：業務内容 -->
+      <div class="parent-item">
+        <svg class="deco-icon" viewBox="0 0 100 100">
+          <rect x="5" y="5" width="90" height="90" fill="none" stroke="currentColor" stroke-width="6"/>
+          <rect x="15" y="15" width="70" height="70" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M 50 15 C 30 35, 15 30, 15 50 C 35 30, 30 15, 50 15 Z" fill="currentColor"/>
+          <path d="M 50 15 C 70 35, 85 30, 85 50 C 65 30, 70 15, 50 15 Z" fill="currentColor"/>
+          <path d="M 50 85 C 30 65, 15 70, 15 50 C 35 70, 30 85, 50 85 Z" fill="currentColor"/>
+          <path d="M 50 85 C 70 65, 85 70, 85 50 C 65 70, 70 85, 50 85 Z" fill="currentColor"/>
+          <circle cx="50" cy="50" r="8" fill="currentColor"/>
+        </svg>
+        <span>業務内容</span>
+      </div>
+
+      <!-- 子項目リスト -->
       <ul class="tree-sub-list">
-        <li class="service-item active" data-target="desc-1">印刷物のデザイン・制作</li>
-        <li class="service-item" data-target="desc-2">学会・イベントの運営お手伝い</li>
-        <li class="service-item" data-target="desc-3">名入れグッズ・ノベルティ制作</li>
-        <li class="service-item" data-target="desc-4">交通広告・折込広告などのPR掲載</li>
+        <li class="service-item active" data-target="desc-1">
+          <svg class="deco-icon" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="6"/>
+            <path d="M 50 20 C 35 35, 20 35, 20 50 C 35 35, 35 20, 50 20 Z" fill="currentColor"/>
+            <path d="M 50 20 C 65 35, 80 35, 80 50 C 65 35, 65 20, 50 20 Z" fill="currentColor"/>
+            <path d="M 50 80 C 35 65, 20 65, 20 50 C 35 65, 35 80, 50 80 Z" fill="currentColor"/>
+            <path d="M 50 80 C 65 65, 80 65, 80 50 C 65 65, 65 80, 50 80 Z" fill="currentColor"/>
+          </svg>
+          <span>印刷物のデザイン・制作</span>
+        </li>
+        <li class="service-item" data-target="desc-2">
+          <svg class="deco-icon" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="6"/>
+            <path d="M 50 20 C 35 35, 20 35, 20 50 C 35 35, 35 20, 50 20 Z" fill="currentColor"/>
+            <path d="M 50 20 C 65 35, 80 35, 80 50 C 65 35, 65 20, 50 20 Z" fill="currentColor"/>
+            <path d="M 50 80 C 35 65, 20 65, 20 50 C 35 65, 35 80, 50 80 Z" fill="currentColor"/>
+            <path d="M 50 80 C 65 65, 80 65, 80 50 C 65 65, 65 80, 50 80 Z" fill="currentColor"/>
+          </svg>
+          <span>学会・イベントの運営お手伝い</span>
+        </li>
+        <li class="service-item" data-target="desc-3">
+          <svg class="deco-icon" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="6"/>
+            <path d="M 50 20 C 35 35, 20 35, 20 50 C 35 35, 35 20, 50 20 Z" fill="currentColor"/>
+            <path d="M 50 20 C 65 35, 80 35, 80 50 C 65 35, 65 20, 50 20 Z" fill="currentColor"/>
+            <path d="M 50 80 C 35 65, 20 65, 20 50 C 35 65, 35 80, 50 80 Z" fill="currentColor"/>
+            <path d="M 50 80 C 65 65, 80 65, 80 50 C 65 65, 65 80, 50 80 Z" fill="currentColor"/>
+          </svg>
+          <span>名入れグッズ・ノベルティ制作</span>
+        </li>
+        <li class="service-item" data-target="desc-4">
+          <svg class="deco-icon" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="6"/>
+            <path d="M 50 20 C 35 35, 20 35, 20 50 C 35 35, 35 20, 50 20 Z" fill="currentColor"/>
+            <path d="M 50 20 C 65 35, 80 35, 80 50 C 65 35, 65 20, 50 20 Z" fill="currentColor"/>
+            <path d="M 50 80 C 35 65, 20 65, 20 50 C 35 65, 35 80, 50 80 Z" fill="currentColor"/>
+            <path d="M 50 80 C 65 65, 80 65, 80 50 C 65 65, 65 80, 50 80 Z" fill="currentColor"/>
+          </svg>
+          <span>交通広告・折込広告などのPR掲載</span>
+        </li>
       </ul>
-      <!-- お問い合わせ（別タブで開くリンク） -->
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLScr7axB1BI-SZwLrKgu1kRn0yKVF-z19w-kNA3POx9RZ9VvMA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="parent-item clickable-parent">お問い合わせ</a>
+
+      <!-- 親項目2：お問い合わせ（別タブリンク） -->
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScr7axB1BI-SZwLrKgu1kRn0yKVF-z19w-kNA3POx9RZ9VvMA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="parent-item clickable-parent">
+        <svg class="deco-icon" viewBox="0 0 100 100">
+          <rect x="5" y="5" width="90" height="90" fill="none" stroke="currentColor" stroke-width="6"/>
+          <rect x="15" y="15" width="70" height="70" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M 50 15 C 30 35, 15 30, 15 50 C 35 30, 30 15, 50 15 Z" fill="currentColor"/>
+          <path d="M 50 15 C 70 35, 85 30, 85 50 C 65 30, 70 15, 50 15 Z" fill="currentColor"/>
+          <path d="M 50 85 C 30 65, 15 70, 15 50 C 35 70, 30 85, 50 85 Z" fill="currentColor"/>
+          <path d="M 50 85 C 70 65, 85 70, 85 50 C 65 70, 70 85, 50 85 Z" fill="currentColor"/>
+          <circle cx="50" cy="50" r="8" fill="currentColor"/>
+        </svg>
+        <span>お問い合わせ</span>
+      </a>
     </div>
 
     <!-- 右側：説明文表示エリア -->
