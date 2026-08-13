@@ -42,22 +42,21 @@
     }
 
     /* サイト下部 背景画像（最背面固定） */
-    .forest-bg {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100vw;
-      height: 25vh;
-      min-height: 140px;
-      pointer-events: none;
-      z-index: -1; /* コンテンツの背後に配置 */
-      opacity: 0.35;
-      
-      background-image: url('forest.png');
-      background-size: cover;
-      background-position: bottom center;
-      background-repeat: no-repeat;
-    }
+.forest-bg {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 200px; /* 画像の高さに合わせて調整 */
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.35;
+
+  background-image: url('forest.png');
+  background-repeat: repeat-x;      /* 横方向にのみ繰り返し */
+  background-position: bottom left; /* 基準を『下端』に固定 */
+  background-size: auto 100%;       /* 高さを枠に100%合わせ、切り取りを防ぐ */
+}
 
     /* コンテンツのレイヤー位置調整 */
     header, main, footer {
