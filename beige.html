@@ -52,7 +52,7 @@
       z-index: -1; 
       opacity: 0.3;
       
-      background-image: url('forest_beige.png');
+      background-image: url('forest.png');
       background-repeat: repeat-x;      /* 横方向に繰り返し */
       background-position: bottom left; /* 基準を下端に固定 */
       background-size: auto 100%;       /* 枠の高さに100%合わせて切り取り防止 */
@@ -186,15 +186,14 @@
       position: relative;
     }
 
-    /* ページの最下部に配置するフッター */
+    /* ページの最下部フッター（PC表示時） */
     footer {
-      margin-top: 60px;
-      padding-top: 20px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+      position: absolute;
+      bottom: 20px;
+      right: 8vw;
       font-size: 0.85rem;
       color: var(--sub-color);
+      z-index: 10;
     }
 
     .copyright {
@@ -208,7 +207,7 @@
     /* レスポンシブ対応（スマホ・タブレット表示時） */
     @media (max-width: 768px) {
       body {
-        padding: 30px 20px 50px 20px;
+        padding: 30px 20px 80px 20px;
         font-size: 16px;
       }
 
@@ -231,11 +230,17 @@
 
       .description-display {
         min-height: 120px;
+        margin-bottom: 40px;
       }
 
+      /* スマホ時は文章の最下部に配置してかぶりを防止 */
       footer {
-        margin-top: 40px;
-        justify-content: center;
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin-top: 30px;
+        text-align: center;
+        width: 100%;
       }
 
       .copyright {
@@ -346,7 +351,7 @@
     <p class="copyright">&copy; <span id="current-year"></span> TABATAWORKS All Rights Reserved.</p>
   </footer>
 
-  <!-- 画面下部：背景画像エリア（forest_beige） -->
+  <!-- 画面下部：背景画像エリア（forest.png） -->
   <div class="forest-bg"></div>
 
   <!-- スクリプト -->
