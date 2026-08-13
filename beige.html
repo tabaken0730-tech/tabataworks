@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TABATAWORKS</title>
+  <!-- アイコン（ファビコン）深緑×クリーム -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23faf8f0'/%3E%3Crect x='8' y='8' width='84' height='84' rx='8' fill='none' stroke='%2325402f' stroke-width='6'/%3E%3Ctext x='18' y='68' font-family='Georgia, serif' font-size='62' font-weight='bold' fill='%2325402f'%3ET%3C/text%3E%3Ctext x='48' y='76' font-family='Georgia, serif' font-size='40' font-weight='bold' fill='%2325402f'%3EW%3C/text%3E%3C/svg%3E">
+  <!-- セリフ体（明朝体）フォントの読み込み -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* 基本設定（ベージュ/薄クリーム × 深緑） */
+    :root {
+      --bg-color: #faf8f0;      /* 薄いクリーム色 */
+      --text-color: #25402f;    /* 深緑 */
+      --accent-color: #cc5c33;  /* アクセント（テラコッタ） */
+      --sub-color: #4a6654;     /* サブ文字色 */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Shippori Mincho', "Yu Mincho", "游明朝", serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.8;
+      font-size: 18px;
+      padding: 50px 8vw 60px 8vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* サイト下部 背景画像（白地自動透過・切れ防止設定） */
+    .forest-bg {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 220px;
+      pointer-events: none;
+      z-index: -1; 
+      opacity: 0.3;
+      
+      background-image: url('forest_beige.png');
+      background-repeat: repeat-x;      /* 横方向に繰り返し */
+      background-position: bottom left; /* 基準を下端に固定 */
+      background-size: auto 100%;       /* 枠の高さに100%合わせて切り取り防止 */
+
+      /* 画像の白背景を透過してクリーム色になじませる設定 */
+      mix-blend-mode: multiply;
+    }
+
+    /* コンテンツのレイヤー位置調整 */
+    header, main, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ヘッダー（社名） */
+    header {
+      margin-bottom: 60px;
+    }
+
+    .site-title {
+      font-size: 2.8rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      display: inline-block;
+      transform: scaleX(0.85);
+      transform-origin: left center;
+    }
+
+    /* メインコンテンツ（2カラムレイアウト） */
+    .main-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 60px;
+      flex-grow: 1;
+    }
+
+    /* 左側：項目リスト */
+    .service-list {
+      list-style: none;
+      width: 45%;
+    }
+
+    /* 親項目（業務内容 / お問い合わせ） */
+    .parent-item {
+      font-size: 1.25rem;
+      font-weight: 600;
+      padding: 12px 0;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .clickable-parent {
+      display: inline-flex;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .clickable-parent:hover {
+      color: var(--accent-color);
+    }
+
+    /* 親項目用の樹木アイコン */
+    .parent-tree-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* 小項目用の無地四角アイコン */
+    .sub-square-icon {
+      width: 8px;
+      height: 8px;
+      flex-shrink: 0;
+      fill: var(--accent-color);
+    }
+
+    /* 子項目（ツリー構造の各業務） */
+    .tree-sub-list {
+      list-style: none;
+      padding-left: 1.2rem;
+      margin-bottom: 15px;
+      border-left: none;
+    }
+
+    .service-item {
+      font-size: 1.05rem;
+      font-weight: 600;
+      padding: 8px 0;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .service-item:hover,
+    .service-item.active {
+      color: var(--accent-color);
+    }
+
+    /* 右側：説明文表示エリア */
+    .description-display {
+      width: 50%;
+      min-height: 200px;
+      padding-top: 12px;
+    }
+
+    .description-text {
+      font-size: 1.2rem;
+      color: var(--text-color);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(10px);
+      position: absolute;
+      width: 100%;
+    }
+
+    .description-text.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      position: relative;
+    }
+
+    /* ページの最下部に配置するフッター */
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--sub-color);
+    }
+
+    .copyright {
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      display: inline-block;
+      transform: scaleX(0.9);
+      transform-origin: left center;
+    }
+
+    /* レスポンシブ対応（スマホ・タブレット表示時） */
+    @media (max-width: 768px) {
+      body {
+        padding: 30px 20px 50px 20px;
+        font-size: 16px;
+      }
+
+      .site-title {
+        font-size: 2rem;
+      }
+
+      .main-container {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .service-list, .description-display {
+        width: 100%;
+      }
+
+      .service-item {
+        font-size: 0.95rem;
+      }
+
+      .description-display {
+        min-height: 120px;
+      }
+
+      footer {
+        margin-top: 40px;
+        justify-content: center;
+      }
+
+      .copyright {
+        transform-origin: center center;
+      }
+
+      .forest-bg {
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 社名 -->
+  <header>
+    <h1 class="site-title">TABATAWORKS</h1>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="main-container">
+    <!-- 左側：ツリー形式メニュー -->
+    <div class="service-list">
+      <!-- 親項目1：業務内容 -->
+      <div class="parent-item">
+        <svg class="parent-tree-icon" viewBox="0 0 100 100">
+          <rect x="6" y="6" width="88" height="88" rx="2" stroke-width="7"/>
+          <path d="M 50 94 Q 50 70 50 55" stroke-width="7"/>
+          <path d="M 50 55 C 45 42 28 35 6 35" stroke-width="6"/>
+          <path d="M 50 55 C 55 42 72 35 94 35" stroke-width="6"/>
+          <path d="M 44 48 C 30 32 18 20 6 18" stroke-width="5"/>
+          <path d="M 56 48 C 70 32 82 20 94 18" stroke-width="5"/>
+          <path d="M 32 38 C 25 24 16 12 6 12" stroke-width="5"/>
+          <path d="M 68 38 C 75 24 84 12 94 12" stroke-width="5"/>
+          <path d="M 50 55 C 45 32 35 18 25 6" stroke-width="5"/>
+          <path d="M 50 55 C 55 32 65 18 75 6" stroke-width="5"/>
+          <path d="M 50 40 L 50 6" stroke-width="5"/>
+        </svg>
+        <span>業務内容</span>
+      </div>
+
+      <!-- 子項目リスト -->
+      <ul class="tree-sub-list">
+        <li class="service-item active" data-target="desc-1">
+          <svg class="sub-square-icon" viewBox="0 0 10 10">
+            <rect width="10" height="10"/>
+          </svg>
+          <span>印刷物のデザイン・制作</span>
+        </li>
+        <li class="service-item" data-target="desc-2">
+          <svg class="sub-square-icon" viewBox="0 0 10 10">
+            <rect width="10" height="10"/>
+          </svg>
+          <span>学会・イベントの運営お手伝い</span>
+        </li>
+        <li class="service-item" data-target="desc-3">
+          <svg class="sub-square-icon" viewBox="0 0 10 10">
+            <rect width="10" height="10"/>
+          </svg>
+          <span>名入れグッズ・ノベルティ制作</span>
+        </li>
+        <li class="service-item" data-target="desc-4">
+          <svg class="sub-square-icon" viewBox="0 0 10 10">
+            <rect width="10" height="10"/>
+          </svg>
+          <span>交通広告・折込広告などのPR掲載</span>
+        </li>
+      </ul>
+
+      <!-- 親項目2：お問い合わせ -->
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScr7axB1BI-SZwLrKgu1kRn0yKVF-z19w-kNA3POx9RZ9VvMA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="parent-item clickable-parent">
+        <svg class="parent-tree-icon" viewBox="0 0 100 100">
+          <rect x="6" y="6" width="88" height="88" rx="2" stroke-width="7"/>
+          <path d="M 50 94 Q 50 70 50 55" stroke-width="7"/>
+          <path d="M 50 55 C 45 42 28 35 6 35" stroke-width="6"/>
+          <path d="M 50 55 C 55 42 72 35 94 35" stroke-width="6"/>
+          <path d="M 44 48 C 30 32 18 20 6 18" stroke-width="5"/>
+          <path d="M 56 48 C 70 32 82 20 94 18" stroke-width="5"/>
+          <path d="M 32 38 C 25 24 16 12 6 12" stroke-width="5"/>
+          <path d="M 68 38 C 75 24 84 12 94 12" stroke-width="5"/>
+          <path d="M 50 55 C 45 32 35 18 25 6" stroke-width="5"/>
+          <path d="M 50 55 C 55 32 65 18 75 6" stroke-width="5"/>
+          <path d="M 50 40 L 50 6" stroke-width="5"/>
+        </svg>
+        <span>お問い合わせ</span>
+      </a>
+    </div>
+
+    <!-- 右側：説明文表示エリア -->
+    <div class="description-display">
+      <p id="desc-1" class="description-text active">
+        印刷物は企画・デザインから製本・発送まで丸ごとお任せください。「デザインだけ」「編集だけ」といったピンポイントのご依頼や、論文などのハードカバー製本、手元にある冊子の裁断・スキャン（データ化）まで柔軟に対応します。
+      </p>
+      <p id="desc-2" class="description-text">
+        学会や研究会、各種イベントの準備から当日までしっかり伴走します。開催案内や特設WEBサイトの立ち上げ、プログラム・要旨集の作成はもちろん、会場の看板設置、参加証の準備、ポスターセッション用パネルのレンタル手配まで、必要な業務をまとめて引き受けます。<br>※対応エリアは仙台市内です
+      </p>
+      <p id="desc-3" class="description-text">
+        イベントのノベルティや企業のPRにぴったりな名入れグッズを制作します。定番のバッグやペンなどの文具類をはじめ、クリアファイルやマグカップまで、デザインから完成・納品まで幅広く対応。「こんなもの作れる？」もお気軽にご相談ください。
+      </p>
+      <p id="desc-4" class="description-text">
+        地域に届く効果的なPRをお手伝いします。仙台市交通局（バス・地下鉄）の交通広告や、河北新報への折込広告など、狙いたいターゲットに合わせた媒体の選定から面倒な掲載手続きまでスムーズにサポートします。
+      </p>
+    </div>
+  </main>
+
+  <!-- ページの最下部フッター -->
+  <footer>
+    <p class="copyright">&copy; <span id="current-year"></span> TABATAWORKS All Rights Reserved.</p>
+  </footer>
+
+  <!-- 画面下部：背景画像エリア（forest_beige） -->
+  <div class="forest-bg"></div>
+
+  <!-- スクリプト -->
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    const serviceItems = document.querySelectorAll('.service-item');
+    const descriptions = document.querySelectorAll('.description-text');
+
+    function activateItem(item) {
+      serviceItems.forEach(i => i.classList.remove('active'));
+      descriptions.forEach(d => d.classList.remove('active'));
+
+      item.classList.add('active');
+      const targetId = item.getAttribute('data-target');
+      document.getElementById(targetId).classList.add('active');
+    }
+
+    serviceItems.forEach(item => {
+      item.addEventListener('click', () => activateItem(item));
+      item.addEventListener('mouseenter', () => activateItem(item));
+    });
+  </script>
+</body>
+</html>
