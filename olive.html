@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TABATAWORKS</title>
-  <!-- ファビコン（オリーブアイコン風モチーフ） -->
+  <!-- ファビコン -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23faf8f0'/%3E%3Crect x='8' y='8' width='84' height='84' rx='8' fill='none' stroke='%2325402f' stroke-width='6'/%3E%3Ctext x='18' y='68' font-family='Georgia, serif' font-size='62' font-weight='bold' fill='%2325402f'%3ET%3C/text%3E%3Ctext x='48' y='76' font-family='Georgia, serif' font-size='40' font-weight='bold' fill='%2325402f'%3EW%3C/text%3E%3C/svg%3E">
   <!-- セリフ体（明朝体）フォントの読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,14 +45,14 @@
     .olive-bg {
       position: fixed;
       bottom: 0;
-      right: 5vw; /* 右下にワンポイントで配置 */
+      right: 5vw;
       width: 320px;
       height: 480px;
       pointer-events: none;
       z-index: -1; 
-      opacity: 0.25; /* 背景に上品に馴染む透明度 */
+      opacity: 0.25;
       
-      background-image: url('olive.png'); /* 保存したオリーブ画像のファイル名 */
+      background-image: url('olive.png'); /* 画像ファイル名 */
       background-repeat: no-repeat;
       background-position: bottom right;
       background-size: contain;
@@ -183,17 +183,16 @@
       position: relative;
     }
 
-    /* ページの最下部フッター（右下固定） */
+    /* ページの最下部フッター（PC表示時） */
     footer {
-      position: fixed;
-      bottom: 20px; /* 下からの距離 */
-      right: 5vw;   /* 右からの距離（画面幅に合わせた余白） */
-      z-index: 10;  /* 背景画像より手前に表示 */
-      margin-top: 0;
-      padding-top: 0;
+      position: absolute;
+      bottom: 20px;
+      right: 8vw;
       font-size: 0.85rem;
       color: var(--sub-color);
+      z-index: 10;
     }
+
     .copyright {
       font-weight: 600;
       letter-spacing: -0.01em;
@@ -205,7 +204,7 @@
     /* レスポンシブ対応（スマホ・タブレット表示時） */
     @media (max-width: 768px) {
       body {
-        padding: 30px 20px 50px 20px;
+        padding: 30px 20px 80px 20px;
         font-size: 16px;
       }
 
@@ -228,24 +227,30 @@
 
       .description-display {
         min-height: 120px;
+        margin-bottom: 40px;
       }
 
-     footer {
-        position: fixed;
-        bottom: 15px;
-        right: 20px;
-        margin-top: 0;
-        justify-content: flex-end; /* 右寄せ */
+      /* スマホ時は文章の最下部に配置してかぶりを防止 */
+      footer {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin-top: 30px;
+        text-align: center;
+        width: 100%;
       }
 
       .copyright {
         transform-origin: center center;
       }
 
+      /* スマホ時の背景画像の透明度とサイズ調整 */
       .olive-bg {
-        width: 200px;
-        height: 300px;
-        right: 0;
+        width: 180px;
+        height: 270px;
+        right: -10px;
+        bottom: 0;
+        opacity: 0.2;
       }
     }
   </style>
@@ -264,7 +269,6 @@
       <!-- 親項目1：業務内容 -->
       <div class="parent-item">
         <svg class="parent-olive-icon" viewBox="0 0 24 24">
-          <!-- オリーブの枝葉アイコンモチーフ -->
           <path d="M12 22C12 22 11.5 15 13 11C14 8.5 16 6 19 4C19 4 17.5 7.5 16.5 10C15.5 12.5 15 15 15 22H12Z"/>
           <path d="M12.5 14.5C10 13.5 7.5 13.5 5 15C7 13 9 11.5 12 11.5"/>
           <path d="M14 9.5C12.5 8 10 7.5 7.5 8.5C9.5 7 12 6.5 14.5 7.5"/>
@@ -337,7 +341,7 @@
     <p class="copyright">&copy; <span id="current-year"></span> TABATAWORKS All Rights Reserved.</p>
   </footer>
 
-  <!-- 画面右下：背景画像エリア（添付いただいたオリーブ画像） -->
+  <!-- 画面右下：背景画像エリア -->
   <div class="olive-bg"></div>
 
   <!-- スクリプト -->
