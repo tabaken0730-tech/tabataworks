@@ -18,6 +18,7 @@
       --text-color: #4a4a4a;    /* 上品な薄めグレー */
       --accent-color: #ba3c25;  /* アクセント（オレンジ/赤茶） */
       --sub-color: #555555;     /* サブ文字色 */
+      --border-color: #ccc;     /* フォーム枠線 */
     }
 
     * {
@@ -42,32 +43,27 @@
     }
 
     /* サイト下部 背景画像（最背面固定） */
-.forest-bg {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 220px;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.35;
+    .forest-bg {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 220px;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.35;
+      background-image: url('forest.png');
+      background-repeat: repeat-x;
+      background-position: bottom left;
+      background-size: auto 100%;
+      mix-blend-mode: multiply;
+    }
 
-  background-image: url('forest.png');
-  background-repeat: repeat-x;
-  background-position: bottom left;
-  background-size: auto 100%;
-
-  /* 画像の中の白を自動的に背景色（グレー）に馴染ませる設定 */
-  mix-blend-mode: multiply;
-}
-
-    /* コンテンツのレイヤー位置調整 */
     header, main, footer {
       position: relative;
       z-index: 1;
     }
 
-    /* ヘッダー（社名） */
     header {
       margin-bottom: 60px;
     }
@@ -79,11 +75,19 @@
       display: inline-block;
       transform: scaleX(0.85);
       transform-origin: left center;
+      cursor: pointer;
+    }
+
+    /* 画面切り替え用 */
+    .page-sheet {
+      display: none;
+    }
+    .page-sheet.active {
+      display: flex;
     }
 
     /* メインコンテンツ（2カラムレイアウト） */
     .main-container {
-      display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 60px;
@@ -96,7 +100,6 @@
       width: 45%;
     }
 
-    /* 親項目（業務内容 / お問い合わせ） */
     .parent-item {
       font-size: 1.25rem;
       font-weight: 600;
@@ -105,20 +108,15 @@
       display: flex;
       align-items: center;
       gap: 12px;
-    }
-
-    .clickable-parent {
-      display: inline-flex;
       cursor: pointer;
-      text-decoration: none;
       transition: color 0.3s ease;
     }
 
-    .clickable-parent:hover {
+    .parent-item:hover,
+    .parent-item.active {
       color: var(--accent-color);
     }
 
-    /* 親項目用の樹木アイコン */
     .parent-tree-icon {
       width: 24px;
       height: 24px;
@@ -129,7 +127,6 @@
       stroke-linejoin: round;
     }
 
-    /* 小項目用の無地オレンジ四角アイコン */
     .sub-square-icon {
       width: 8px;
       height: 8px;
@@ -137,12 +134,10 @@
       fill: var(--accent-color);
     }
 
-    /* 子項目（ツリー構造の各業務） */
     .tree-sub-list {
       list-style: none;
       padding-left: 1.2rem;
       margin-bottom: 15px;
-      border-left: none;
     }
 
     .service-item {
@@ -166,6 +161,7 @@
       width: 50%;
       min-height: 200px;
       padding-top: 12px;
+      position: relative;
     }
 
     .description-text {
@@ -176,6 +172,8 @@
       transition: opacity 0.4s ease, transform 0.4s ease;
       transform: translateY(10px);
       position: absolute;
+      top: 12px;
+      left: 0;
       width: 100%;
     }
 
@@ -184,14 +182,213 @@
       visibility: visible;
       transform: translateY(0);
       position: relative;
+      top: 0;
     }
 
-    /* ページの最下部に配置するフッター */
+    /* --------------------------------------------------
+       サイトデザイン統合型 お問い合わせシート スタイル
+    -------------------------------------------------- */
+    #contact-sheet-container {
+      flex-direction: column;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .back-btn {
+      align-self: flex-start;
+      margin-bottom: 30px;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.1rem;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+    .back-btn:hover {
+      color: var(--accent-color);
+    }
+
+    .contact-form-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      width: 100%;
+    }
+
+    .form-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+    }
+
+    .form-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 12px;
+    }
+
+    .form-lead {
+      font-size: 1.05rem;
+      color: var(--sub-color);
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .req-note {
+      font-size: 0.9rem;
+      color: var(--accent-color);
+    }
+
+    /* 各入力グループ */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-label .req {
+      color: var(--accent-color);
+    }
+
+    .form-subtext {
+      font-size: 0.9rem;
+      color: var(--sub-color);
+    }
+
+    /* 入力フォームデザイン */
+    .site-input,
+    .site-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--text-color);
+      background-color: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .site-input:focus,
+    .site-textarea:focus {
+      border-color: var(--accent-color);
+      background-color: #ffffff;
+    }
+
+    .site-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* チェックボックスグループ */
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-color);
+      cursor: pointer;
+    }
+
+    /* 外部リンク用ボタン（Googleフォーム導線） */
+    .external-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 0.95rem;
+      text-decoration: none;
+      width: fit-content;
+      margin-top: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .external-link-btn:hover {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+      background-color: #ffffff;
+    }
+
+    /* ボタンエリア */
+    .form-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .submit-btn {
+      padding: 12px 40px;
+      background-color: var(--accent-color);
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.85;
+    }
+
+    .reset-btn {
+      background: none;
+      border: none;
+      color: var(--sub-color);
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: underline;
+      transition: color 0.3s ease;
+    }
+
+    .reset-btn:hover {
+      color: var(--accent-color);
+    }
+
+    /* フッター（右下配置） */
     footer {
       margin-top: 60px;
       padding-top: 20px;
       display: flex;
-      justify-content: flex-start;
+      justify-content: flex-end;
       align-items: center;
       font-size: 0.85rem;
       color: var(--sub-color);
@@ -202,18 +399,14 @@
       letter-spacing: -0.01em;
       display: inline-block;
       transform: scaleX(0.9);
-      transform-origin: left center;
+      transform-origin: right center;
     }
 
-    /* レスポンシブ対応（スマホ・タブレット表示時） */
+    /* レスポンシブ対応 */
     @media (max-width: 768px) {
       body {
         padding: 30px 20px 50px 20px;
         font-size: 16px;
-      }
-
-      .site-title {
-        font-size: 2rem;
       }
 
       .main-container {
@@ -225,25 +418,9 @@
         width: 100%;
       }
 
-      .service-item {
-        font-size: 0.95rem;
-      }
-
-      .description-display {
-        min-height: 120px;
-      }
-
       footer {
         margin-top: 40px;
-        justify-content: center; /* スマホ表示時は中央揃え */
-      }
-
-      .copyright {
-        transform-origin: center center;
-      }
-
-      .forest-bg {
-        height: 18vh;
+        justify-content: flex-end;
       }
     }
   </style>
@@ -252,11 +429,11 @@
 
   <!-- 社名 -->
   <header>
-    <h1 class="site-title">TABATAWORKS</h1>
+    <h1 class="site-title" id="site-logo">TABATAWORKS</h1>
   </header>
 
-  <!-- メインコンテンツ -->
-  <main class="main-container">
+  <!-- ==================== メイン画面シート ==================== -->
+  <main id="main-sheet" class="main-container page-sheet active">
     <!-- 左側：ツリー形式メニュー -->
     <div class="service-list">
       <!-- 親項目1：業務内容 -->
@@ -277,36 +454,28 @@
         <span>業務内容</span>
       </div>
 
-      <!-- 子項目リスト（無地オレンジ四角） -->
+      <!-- 子項目リスト -->
       <ul class="tree-sub-list">
         <li class="service-item active" data-target="desc-1">
-          <svg class="sub-square-icon" viewBox="0 0 10 10">
-            <rect width="10" height="10"/>
-          </svg>
+          <svg class="sub-square-icon" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>
           <span>印刷物のデザイン・制作</span>
         </li>
         <li class="service-item" data-target="desc-2">
-          <svg class="sub-square-icon" viewBox="0 0 10 10">
-            <rect width="10" height="10"/>
-          </svg>
-          <span>学会・イベントの運営お手伝い</span>
+          <svg class="sub-square-icon" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>
+          <span>学会・イベント運営のサポート</span>
         </li>
         <li class="service-item" data-target="desc-3">
-          <svg class="sub-square-icon" viewBox="0 0 10 10">
-            <rect width="10" height="10"/>
-          </svg>
+          <svg class="sub-square-icon" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>
           <span>名入れグッズ・ノベルティ制作</span>
         </li>
         <li class="service-item" data-target="desc-4">
-          <svg class="sub-square-icon" viewBox="0 0 10 10">
-            <rect width="10" height="10"/>
-          </svg>
+          <svg class="sub-square-icon" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>
           <span>交通広告・折込広告などのPR掲載</span>
         </li>
       </ul>
 
-      <!-- 親項目2：お問い合わせ（別タブリンク） -->
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLScr7axB1BI-SZwLrKgu1kRn0yKVF-z19w-kNA3POx9RZ9VvMA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="parent-item clickable-parent">
+      <!-- 親項目2：お問い合わせ（クリックで別シートに切り替え） -->
+      <div id="btn-open-contact" class="parent-item">
         <svg class="parent-tree-icon" viewBox="0 0 100 100">
           <rect x="6" y="6" width="88" height="88" rx="2" stroke-width="7"/>
           <path d="M 50 94 Q 50 70 50 55" stroke-width="7"/>
@@ -321,7 +490,25 @@
           <path d="M 50 40 L 50 6" stroke-width="5"/>
         </svg>
         <span>お問い合わせ</span>
-      </a>
+      </div>
+
+      <!-- 親項目3：コンセプト -->
+      <div class="parent-item service-item-parent" data-target="desc-concept" style="margin-top: 15px;">
+        <svg class="parent-tree-icon" viewBox="0 0 100 100">
+          <rect x="6" y="6" width="88" height="88" rx="2" stroke-width="7"/>
+          <path d="M 50 94 Q 50 70 50 55" stroke-width="7"/>
+          <path d="M 50 55 C 45 42 28 35 6 35" stroke-width="6"/>
+          <path d="M 50 55 C 55 42 72 35 94 35" stroke-width="6"/>
+          <path d="M 44 48 C 30 32 18 20 6 18" stroke-width="5"/>
+          <path d="M 56 48 C 70 32 82 20 94 18" stroke-width="5"/>
+          <path d="M 32 38 C 25 24 16 12 6 12" stroke-width="5"/>
+          <path d="M 68 38 C 75 24 84 12 94 12" stroke-width="5"/>
+          <path d="M 50 55 C 45 32 35 18 25 6" stroke-width="5"/>
+          <path d="M 50 55 C 55 32 65 18 75 6" stroke-width="5"/>
+          <path d="M 50 40 L 50 6" stroke-width="5"/>
+        </svg>
+        <span>コンセプト</span>
+      </div>
     </div>
 
     <!-- 右側：説明文表示エリア -->
@@ -338,10 +525,103 @@
       <p id="desc-4" class="description-text">
         地域に届く効果的なPRをお手伝いします。<br>仙台市交通局（バス・地下鉄）の交通広告や、河北新報への折込広告など、狙いたいターゲットに合わせた媒体の選定から面倒な掲載手続きまでスムーズにサポートします。
       </p>
+      <p id="desc-concept" class="description-text">
+        20年以上に亘って東北大学や学会事務局、官公庁などで印刷・学会運営などの営業を行ってきた実績を生かし、あらゆるお悩みやご要望にお応えします。<br>丁寧で分かり易くをモットーに、安心して利用できる対応を心がけています。
+      </p>
     </div>
   </main>
 
-  <!-- ページの最下部（コンテンツ全体の後）に置くフッター -->
+
+  <!-- ==================== お問い合わせ（サイト統一デザイン別シート） ==================== -->
+  <main id="contact-sheet-container" class="page-sheet">
+    <button class="back-btn" id="btn-close-contact">メイン画面に戻る</button>
+
+    <form class="contact-form-wrapper" action="#" method="POST">
+      
+      <!-- ヘッダー部分 -->
+      <div class="form-header">
+        <h2 class="form-title">お問い合わせ</h2>
+        <p class="form-lead">
+          弊社サービスに関するお問い合わせ・お見積りのご依頼は、以下のフォームよりお気軽にご連絡ください。
+        </p>
+        <span class="req-note">* 必須の項目です</span>
+      </div>
+
+      <!-- 1. お問合せ内容 -->
+      <div class="form-group">
+        <label class="form-label">お問合せ内容 <span class="req">*</span></label>
+        <span class="form-subtext">※学会・イベントは仙台市内の会場に限られますのでご了承ください。</span>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" name="category" value="印刷・製本"> 印刷・製本
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="category" value="学会・イベント"> 学会・イベント
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="category" value="名入れグッズ"> 名入れグッズ
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="category" value="広告掲載"> 広告掲載
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="category" value="その他"> その他
+          </label>
+        </div>
+      </div>
+
+      <!-- 2. お名前 -->
+      <div class="form-group">
+        <label class="form-label" for="field-name">お名前 <span class="req">*</span></label>
+        <input type="text" id="field-name" class="site-input" name="name" required placeholder="山田 太郎">
+      </div>
+
+      <!-- 3. 貴社名・団体名 -->
+      <div class="form-group">
+        <label class="form-label" for="field-company">貴社名・団体名（任意）</label>
+        <span class="form-subtext">法人・団体の場合はご入力ください。</span>
+        <input type="text" id="field-company" class="site-input" name="company" placeholder="株式会社〇〇">
+      </div>
+
+      <!-- 4. メールアドレス -->
+      <div class="form-group">
+        <label class="form-label" for="field-email">メールアドレス <span class="req">*</span></label>
+        <input type="email" id="field-email" class="site-input" name="email" required placeholder="example@domain.com">
+      </div>
+
+      <!-- 5. 電話番号 -->
+      <div class="form-group">
+        <label class="form-label" for="field-tel">電話番号（任意）</label>
+        <input type="tel" id="field-tel" class="site-input" name="tel" placeholder="022-000-0000">
+      </div>
+
+      <!-- 6. お問い合わせ詳細 -->
+      <div class="form-group">
+        <label class="form-label" for="field-details">お問い合わせ詳細 <span class="req">*</span></label>
+        <span class="form-subtext">具体的なご希望（部数、納期、ご予算など）がございましたらご記入ください。</span>
+        <textarea id="field-details" class="site-textarea" name="details" required></textarea>
+      </div>
+
+      <!-- 7. 見本の添付（Googleフォーム導線） -->
+      <div class="form-group">
+        <label class="form-label">見本の添付（任意）</label>
+        <span class="form-subtext">参考データ・画像ファイルを添付して送信されたい場合は、以下の専用フォーム（Googleフォーム）をご利用ください。</span>
+        <!-- ※ hrefのURLを、ファイル添付用に用意したご自身のGoogleフォームURLに変更してください -->
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdRzqSW1lT94PsAKTG5ufwsvIAfjD98VvFH6PdJYf-XvYdt6g/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="external-link-btn">
+          <span>画像・ファイルを添付して送信する（Googleフォーム） ↗</span>
+        </a>
+      </div>
+
+      <!-- 送信・クリアボタン -->
+      <div class="form-btn-group">
+        <button type="submit" class="submit-btn">送信する</button>
+        <button type="reset" class="reset-btn">内容をクリア</button>
+      </div>
+
+    </form>
+  </main>
+
+  <!-- ページの最下部に置くフッター -->
   <footer>
     <p class="copyright">&copy; <span id="current-year"></span> TABATAWORKS All Rights Reserved.</p>
   </footer>
@@ -354,8 +634,33 @@
     // 年度の自動取得・表示
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // メニュー切り替えスクリプト（業務内容の4項目）
-    const serviceItems = document.querySelectorAll('.service-item');
+    // 画面切り替え（シート管理）
+    const mainSheet = document.getElementById('main-sheet');
+    const contactSheet = document.getElementById('contact-sheet-container');
+    const btnOpenContact = document.getElementById('btn-open-contact');
+    const btnCloseContact = document.getElementById('btn-close-contact');
+    const siteLogo = document.getElementById('site-logo');
+
+    // お問い合わせシートを表示
+    btnOpenContact.addEventListener('click', () => {
+      mainSheet.classList.remove('active');
+      contactSheet.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // メインシートを表示
+    function showMain() {
+      contactSheet.classList.remove('active');
+      mainSheet.classList.active && mainSheet.classList.remove('active');
+      mainSheet.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    btnCloseContact.addEventListener('click', showMain);
+    siteLogo.addEventListener('click', showMain);
+
+    // メニュー切替スクリプト（右側テキスト表示）
+    const serviceItems = document.querySelectorAll('.service-item, .service-item-parent');
     const descriptions = document.querySelectorAll('.description-text');
 
     function activateItem(item) {
@@ -364,7 +669,10 @@
 
       item.classList.add('active');
       const targetId = item.getAttribute('data-target');
-      document.getElementById(targetId).classList.add('active');
+      const targetElem = document.getElementById(targetId);
+      if (targetElem) {
+        targetElem.classList.add('active');
+      }
     }
 
     serviceItems.forEach(item => {
