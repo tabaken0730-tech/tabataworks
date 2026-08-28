@@ -264,6 +264,8 @@
       
       <input type="hidden" name="_subject" value="【TABATAWORKS】WEBサイトよりお問い合わせ">
       <input type="hidden" name="_template" value="table">
+      <!-- 添付有無を裏側で管理する隠しデータ欄 -->
+      <input type="hidden" name="添付ファイル" id="field-attachment-flag" value="なし">
 
       <div class="form-header">
         <h2 class="form-title">お問い合わせ</h2>
@@ -326,7 +328,7 @@
       <div class="form-group">
         <label class="form-label">見本の添付（任意）</label>
         <span class="form-subtext">参考データや画像ファイルを添付して送信されたい場合は、専用フォーム（Googleフォーム）をご利用ください。</span>
-        <a href="https://docs.google.com/forms/d/1CJJ_EC5YurBC24RUlQwufx2Y-9sy-YqRkvbq_9Z-wF0/edit" target="_blank" rel="noopener noreferrer" class="external-link-btn">
+        <a href="https://docs.google.com/forms/d/1CJJ_EC5YurBC24RUlQwufx2Y-9sy-YqRkvbq_9Z-wF0/viewform" target="_blank" rel="noopener noreferrer" id="gform-btn" class="external-link-btn">
           <span>画像・ファイルを添付して送信する（Googleフォーム） ↗</span>
         </a>
       </div>
@@ -387,6 +389,14 @@
     serviceItems.forEach(item => {
       item.addEventListener('click', () => activateItem(item));
       item.addEventListener('mouseenter', () => activateItem(item));
+    });
+
+    // Googleフォームリンクが押されたら「添付ファイル」項目を「あり」へ自動変更
+    const gformBtn = document.getElementById('gform-btn');
+    const attachmentFlag = document.getElementById('field-attachment-flag');
+
+    gformBtn.addEventListener('click', function() {
+      attachmentFlag.value = 'あり（Googleフォーム移動）';
     });
 
     // JavaScript（Fetch API）による送信処理（画面遷移なし）
