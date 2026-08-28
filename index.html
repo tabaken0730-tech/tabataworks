@@ -117,6 +117,15 @@
     .checkbox-label { display: inline-flex; align-items: center; gap: 10px; font-size: 1.05rem; cursor: pointer; color: var(--text-color); }
     .checkbox-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent-color); cursor: pointer; }
 
+    /* Googleフォーム誘導ボタン */
+    .external-link-btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
+      background-color: rgba(255, 255, 255, 0.8); border: 1px solid var(--border-color);
+      border-radius: 4px; color: var(--text-color); font-family: inherit; font-size: 0.95rem;
+      text-decoration: none; width: fit-content; margin-top: 4px; transition: all 0.3s ease;
+    }
+    .external-link-btn:hover { border-color: var(--accent-color); color: var(--accent-color); background-color: #ffffff; }
+
     .form-btn-group { display: flex; align-items: center; gap: 20px; margin-top: 10px; }
     .submit-btn {
       padding: 12px 40px; background-color: var(--accent-color); color: #ffffff;
@@ -127,14 +136,9 @@
     .reset-btn { background: none; border: none; color: var(--sub-color); font-family: inherit; font-size: 0.95rem; cursor: pointer; text-decoration: underline; }
     .reset-btn:hover { color: var(--accent-color); }
 
-    /* 送信完了メッセージ表示エリア */
     #form-complete-message {
-      display: none;
-      padding: 30px;
-      border: 1px solid var(--border-color);
-      background-color: rgba(255, 255, 255, 0.7);
-      border-radius: 4px;
-      text-align: center;
+      display: none; padding: 30px; border: 1px solid var(--border-color);
+      background-color: rgba(255, 255, 255, 0.7); border-radius: 4px; text-align: center;
     }
 
     footer { margin-top: 60px; padding-top: 20px; display: flex; justify-content: flex-end; align-items: center; font-size: 0.85rem; color: var(--sub-color); }
@@ -251,16 +255,13 @@
   <main id="contact-sheet-container" class="page-sheet">
     <button class="back-btn" id="btn-close-contact">メイン画面に戻る</button>
 
-    <!-- 送信完了時のメッセージ領域 -->
     <div id="form-complete-message">
       <h3 style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-color);">お問い合わせを受け付けました</h3>
       <p>ご連絡ありがとうございます。内容を確認のうえ、担当者より折り返しご連絡いたします。</p>
     </div>
 
-    <!-- 送信先をFormSubmitに設定 -->
     <form id="contact-form" class="contact-form-wrapper" action="https://formsubmit.co/info@tabataworks.com" method="POST">
       
-      <!-- FormSubmitの自動返信タイトル等の設定 -->
       <input type="hidden" name="_subject" value="【TABATAWORKS】WEBサイトよりお問い合わせ">
       <input type="hidden" name="_template" value="table">
 
@@ -321,6 +322,15 @@
         <textarea id="field-details" class="site-textarea" name="お問い合わせ詳細" required></textarea>
       </div>
 
+      <!-- 7. 見本の添付（Googleフォーム導線） -->
+      <div class="form-group">
+        <label class="form-label">見本の添付（任意）</label>
+        <span class="form-subtext">参考データや画像ファイルを添付して送信されたい場合は、専用フォーム（Googleフォーム）をご利用ください。</span>
+        <a href="https://docs.google.com/forms/d/1CJJ_EC5YurBC24RUlQwufx2Y-9sy-YqRkvbq_9Z-wF0/edit" target="_blank" rel="noopener noreferrer" class="external-link-btn">
+          <span>画像・ファイルを添付して送信する（Googleフォーム） ↗</span>
+        </a>
+      </div>
+
       <div class="form-btn-group">
         <button type="submit" id="submit-btn" class="submit-btn">送信する</button>
         <button type="reset" class="reset-btn">内容をクリア</button>
@@ -379,20 +389,19 @@
       item.addEventListener('mouseenter', () => activateItem(item));
     });
 
-    // JavaScript（Fetch API）によるバックグラウンド送信処理
+    // JavaScript（Fetch API）による送信処理（画面遷移なし）
     const contactForm = document.getElementById('contact-form');
     const submitBtn = document.getElementById('submit-btn');
     const completeMessage = document.getElementById('form-complete-message');
 
     contactForm.addEventListener('submit', function(e) {
-      e.preventDefault(); // 通常の画面遷移（405エラーの原因）を停止
+      e.preventDefault();
 
       submitBtn.disabled = true;
       submitBtn.textContent = '送信中...';
 
       const formData = new FormData(contactForm);
 
-      // Fetch APIでバックグラウンド送信
       fetch(contactForm.action, {
         method: 'POST',
         body: formData,
@@ -401,8 +410,8 @@
         }
       }).then(response => {
         if (response.ok) {
-          contactForm.style.display = 'none'; // フォームを非表示
-          completeMessage.style.display = 'block'; // 完了メッセージを表示
+          contactForm.style.display = 'none';
+          completeMessage.style.display = 'block';
         } else {
           alert('送信エラーが発生しました。時間を置いて再度お試しください。');
           submitBtn.disabled = false;
