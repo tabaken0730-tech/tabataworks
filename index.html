@@ -117,7 +117,6 @@
     .checkbox-label { display: inline-flex; align-items: center; gap: 10px; font-size: 1.05rem; cursor: pointer; color: var(--text-color); }
     .checkbox-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent-color); cursor: pointer; }
 
-    /* Googleフォーム誘導ボタン */
     .external-link-btn {
       display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
       background-color: rgba(255, 255, 255, 0.8); border: 1px solid var(--border-color);
@@ -135,11 +134,6 @@
     .submit-btn:hover { opacity: 0.85; }
     .reset-btn { background: none; border: none; color: var(--sub-color); font-family: inherit; font-size: 0.95rem; cursor: pointer; text-decoration: underline; }
     .reset-btn:hover { color: var(--accent-color); }
-
-    #form-complete-message {
-      display: none; padding: 30px; border: 1px solid var(--border-color);
-      background-color: rgba(255, 255, 255, 0.7); border-radius: 4px; text-align: center;
-    }
 
     footer { margin-top: 60px; padding-top: 20px; display: flex; justify-content: flex-end; align-items: center; font-size: 0.85rem; color: var(--sub-color); }
     .copyright { font-weight: 600; letter-spacing: -0.01em; display: inline-block; transform: scaleX(0.9); transform-origin: right center; }
@@ -255,16 +249,11 @@
   <main id="contact-sheet-container" class="page-sheet">
     <button class="back-btn" id="btn-close-contact">メイン画面に戻る</button>
 
-    <div id="form-complete-message">
-      <h3 style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-color);">お問い合わせを受け付けました</h3>
-      <p>ご連絡ありがとうございます。内容を確認のうえ、担当者より折り返しご連絡いたします。</p>
-    </div>
-
     <form id="contact-form" class="contact-form-wrapper" action="https://formsubmit.co/info@tabataworks.com" method="POST">
       
       <input type="hidden" name="_subject" value="【TABATAWORKS】WEBサイトよりお問い合わせ">
       <input type="hidden" name="_template" value="table">
-      <!-- 添付有無を裏側で管理する隠しデータ欄 -->
+      <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="添付ファイル" id="field-attachment-flag" value="なし">
 
       <div class="form-header">
@@ -324,7 +313,7 @@
         <textarea id="field-details" class="site-textarea" name="お問い合わせ詳細" required></textarea>
       </div>
 
-      <!-- 7. 見本の添付（Googleフォーム導線） -->
+      <!-- 見本の添付（Googleフォーム導線） -->
       <div class="form-group">
         <label class="form-label">見本の添付（任意）</label>
         <span class="form-subtext">参考データや画像ファイルを添付して送信されたい場合は、専用フォーム（Googleフォーム）をご利用ください。</span>
@@ -391,47 +380,12 @@
       item.addEventListener('mouseenter', () => activateItem(item));
     });
 
-    // Googleフォームリンクが押されたら「添付ファイル」項目を「あり」へ自動変更
+    // Googleフォームリンクが押されたら「添付ファイル」項目を自動更新
     const gformBtn = document.getElementById('gform-btn');
     const attachmentFlag = document.getElementById('field-attachment-flag');
 
     gformBtn.addEventListener('click', function() {
       attachmentFlag.value = 'あり（Googleフォーム移動）';
-    });
-
-    // JavaScript（Fetch API）による送信処理（画面遷移なし）
-    const contactForm = document.getElementById('contact-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const completeMessage = document.getElementById('form-complete-message');
-
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = '送信中...';
-
-      const formData = new FormData(contactForm);
-
-      fetch(contactForm.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      }).then(response => {
-        if (response.ok) {
-          contactForm.style.display = 'none';
-          completeMessage.style.display = 'block';
-        } else {
-          alert('送信エラーが発生しました。時間を置いて再度お試しください。');
-          submitBtn.disabled = false;
-          submitBtn.textContent = '送信する';
-        }
-      }).catch(error => {
-        alert('送信エラーが発生しました。通信環境をご確認ください。');
-        submitBtn.disabled = false;
-        submitBtn.textContent = '送信する';
-      });
     });
   </script>
 </body>
