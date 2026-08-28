@@ -339,57 +339,68 @@
 
   <div class="forest-bg"></div>
 
-  <script>
-    document.getElementById('current-year').textContent = new Date().getFullYear();
+<script>
+  document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    const mainSheet = document.getElementById('main-sheet');
-    const contactSheet = document.getElementById('contact-sheet-container');
-    const btnOpenContact = document.getElementById('btn-open-contact');
-    const btnCloseContact = document.getElementById('btn-close-contact');
-    const siteLogo = document.getElementById('site-logo');
+  const mainSheet = document.getElementById('main-sheet');
+  const contactSheet = document.getElementById('contact-sheet-container');
+  const btnOpenContact = document.getElementById('btn-open-contact');
+  const btnCloseContact = document.getElementById('btn-close-contact');
+  const siteLogo = document.getElementById('site-logo');
 
-    btnOpenContact.addEventListener('click', () => {
-      mainSheet.classList.remove('active');
-      contactSheet.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  btnOpenContact.addEventListener('click', () => {
+    mainSheet.classList.remove('active');
+    contactSheet.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
-    function showMain() {
-      contactSheet.classList.remove('active');
-      mainSheet.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  function showMain() {
+    contactSheet.classList.remove('active');
+    mainSheet.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-    btnCloseContact.addEventListener('click', showMain);
-    siteLogo.addEventListener('click', showMain);
+  btnCloseContact.addEventListener('click', showMain);
+  siteLogo.addEventListener('click', showMain);
 
-    const serviceItems = document.querySelectorAll('.service-item, .service-item-parent');
-    const descriptions = document.querySelectorAll('.description-text');
+  const serviceItems = document.querySelectorAll('.service-item, .service-item-parent');
+  const descriptions = document.querySelectorAll('.description-text');
 
-    function activateItem(item) {
-      serviceItems.forEach(i => i.classList.remove('active'));
-      descriptions.forEach(d => d.classList.remove('active'));
+  function activateItem(item) {
+    serviceItems.forEach(i => i.classList.remove('active'));
+    btnOpenContact.classList.remove('active');
+    descriptions.forEach(d => d.classList.remove('active'));
 
-      item.classList.add('active');
-      const targetId = item.getAttribute('data-target');
+    item.classList.add('active');
+    const targetId = item.getAttribute('data-target');
+    if (targetId) {
       const targetElem = document.getElementById(targetId);
       if (targetElem) {
         targetElem.classList.add('active');
       }
     }
+  }
 
-    serviceItems.forEach(item => {
-      item.addEventListener('click', () => activateItem(item));
-      item.addEventListener('mouseenter', () => activateItem(item));
-    });
+  serviceItems.forEach(item => {
+    item.addEventListener('click', () => activateItem(item));
+    item.addEventListener('mouseenter', () => activateItem(item));
+  });
 
-    // Googleフォームリンクが押されたら「添付ファイル」項目を「あり」へ自動変更
-    const gformBtn = document.getElementById('gform-btn');
-    const attachmentFlag = document.getElementById('field-attachment-flag');
+  // お問い合わせにホバーした際、他の赤色ハイライトと右側のテキスト表示を解除する処理を追加
+  btnOpenContact.addEventListener('mouseenter', () => {
+    serviceItems.forEach(i => i.classList.remove('active'));
+    descriptions.forEach(d => d.classList.remove('active'));
+  });
 
+  // Googleフォームリンクが押されたら「添付ファイル」項目を「あり」へ自動変更
+  const gformBtn = document.getElementById('gform-btn');
+  const attachmentFlag = document.getElementById('field-attachment-flag');
+
+  if (gformBtn && attachmentFlag) {
     gformBtn.addEventListener('click', function() {
       attachmentFlag.value = 'あり（Googleフォーム移動）';
     });
-  </script>
+  }
+</script>
 </body>
 </html>
