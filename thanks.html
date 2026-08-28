@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>送信完了 | TABATAWORKS</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23f2f2f2'/%3E%3Crect x='8' y='8' width='84' height='84' rx='8' fill='none' stroke='%234a4a4a' stroke-width='6'/%3E%3Ctext x='18' y='68' font-family='Georgia, serif' font-size='62' font-weight='bold' fill='%234a4a4a'%3ET%3C/text%3E%3Ctext x='48' y='76' font-family='Georgia, serif' font-size='40' font-weight='bold' fill='%234a4a4a'%3EW%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #f2f2f2;
+      --text-color: #4a4a4a;
+      --accent-color: #ba3c25;
+      --sub-color: #555555;
+      --border-color: #ccc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Shippori Mincho', "Yu Mincho", "游明朝", serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.8;
+      font-size: 18px;
+      padding: 50px 8vw 60px 8vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .forest-bg {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100vw; height: 220px;
+      pointer-events: none; z-index: -1; opacity: 0.35;
+      background-image: url('forest.png');
+      background-repeat: repeat-x;
+      background-position: bottom left;
+      background-size: auto 100%;
+      mix-blend-mode: multiply;
+    }
+
+    header, main, footer { position: relative; z-index: 1; }
+    header { margin-bottom: 60px; }
+
+    .site-title {
+      font-size: 2rem; font-weight: 500; letter-spacing: -0.02em;
+      display: inline-block; transform: scaleX(0.85); transform-origin: left center;
+      text-decoration: none; color: var(--text-color);
+    }
+
+    .thanks-container {
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .thanks-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--text-color);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 16px;
+      width: 100%;
+    }
+
+    .thanks-message {
+      font-size: 1.1rem;
+      color: var(--text-color);
+      line-height: 2;
+    }
+
+    .back-home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 32px;
+      background-color: var(--accent-color);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 16px;
+      transition: opacity 0.3s ease;
+    }
+
+    .back-home-btn:hover {
+      opacity: 0.85;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--sub-color);
+    }
+
+    .copyright {
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      display: inline-block;
+      transform: scaleX(0.9);
+      transform-origin: right center;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 30px 20px 50px 20px; font-size: 16px; }
+      header { margin-bottom: 40px; }
+      footer { margin-top: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="site-title">TABATAWORKS</a>
+  </header>
+
+  <main class="thanks-container">
+    <h2 class="thanks-title">お問い合わせを受け付けました</h2>
+    <p class="thanks-message">
+      ご連絡ありがとうございます。<br>
+      送信いただいた内容を確認のうえ、担当者より折り返しご連絡いたします。
+    </p>
+    <a href="index.html" class="back-home-btn">トップページへ戻る</a>
+  </main>
+
+  <footer>
+    <p class="copyright">&copy; <span id="current-year"></span> TABATAWORKS All Rights Reserved.</p>
+  </footer>
+
+  <div class="forest-bg"></div>
+
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
