@@ -144,6 +144,21 @@
       .service-list, .description-display { width: 100%; }
       footer { margin-top: 40px; justify-content: flex-end; }
     }
+    /* 説明文の親要素の位置指定を確実にする */
+    .description-text {
+      position: relative; /* 子要素の絶対配置の基準にする */
+    }
+
+    /* 右下に配置する冊子アイコンのスタイル */
+    .desc-icon {
+      position: absolute;
+      right: 0;
+      bottom: -40px; /* テキストとの間隔に合わせて調整してください */
+      width: 80px;   /* お好みのサイズに調整してください */
+      height: auto;
+      opacity: 0.8;  /* 周りのデザインになじませる透過度（お好みで） */
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -229,6 +244,7 @@
     <div class="description-display">
       <p id="desc-1" class="description-text active">
         印刷物は企画・デザインから製本・発送まで丸ごとお任せください。<br>「デザインだけ」や「編集だけ」といったピンポイントのご依頼も承ります。<br>また、論文などのハードカバー製本、手元にある冊子の裁断・スキャン（データ化）など、多岐に渡って対応してますので困りごとがあれば先ずはお問い合わせください。
+        <img src="book-icon.png" alt="冊子アイコン" class="desc-icon">
       </p>
       <p id="desc-2" class="description-text">
         学会や研究会、各種イベントの準備段階から開催後まで運営のお手伝いをいたします。<br>開催案内や特設WEBサイトの立ち上げ、プログラム・要旨集の作成はもちろん、会場の看板設置、参加証の準備、ポスターセッション用パネルのレンタル手配まで、必要な業務をまとめて引き受けます。<br>※対応エリアは仙台市内です
