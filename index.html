@@ -77,13 +77,40 @@
     }
     .service-item:hover, .service-item.active { color: var(--accent-color); }
 
-    .description-display { width: 50%; min-height: 200px; padding-top: 12px; position: relative; }
+    /* 説明文表示エリア */
+    .description-display { 
+      width: 50%; 
+      padding-top: 12px; 
+      position: relative; 
+    }
+
+    /* 非表示のテキストは絶対配置にして高さを潰す */
     .description-text {
       font-size: 1.2rem; color: var(--text-color); opacity: 0; visibility: hidden;
       transition: opacity 0.4s ease, transform 0.4s ease; transform: translateY(10px);
       position: absolute; top: 12px; left: 0; width: 100%;
     }
-    .description-text.active { opacity: 1; visibility: visible; transform: translateY(0); position: relative; top: 0; }
+
+    /* アクティブ（表示中）のテキストのみ相対配置にして高さを確保 */
+    .description-text.active { 
+      opacity: 1; 
+      visibility: visible; 
+      transform: translateY(0); 
+      position: relative; 
+      top: 0; 
+    }
+
+    /* 冊子アイコンをテキストの最背面・右下に配置 */
+    .desc-icon {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 200px;
+      height: auto;
+      z-index: -1;          /* テキストの後ろ側（最背面）に配置 */
+      pointer-events: none; /* クリックや選択の邪魔をしない設定 */
+      opacity: 0.8;
+    }
 
     #contact-sheet-container { flex-direction: column; width: 100%; max-width: 800px; margin: 0 auto; }
     .back-btn {
@@ -143,22 +170,6 @@
       .main-container { flex-direction: column; gap: 30px; }
       .service-list, .description-display { width: 100%; }
       footer { margin-top: 40px; justify-content: flex-end; }
-    }
-    /* 説明文の親要素の位置指定基準を設定 */
-    .description-text {
-      position: relative; /* 絶対配置の基準位置 */
-    }
-
-    /* 冊子アイコンを最背面・右下に絶対配置 */
-    .desc-icon {
-      position: absolute;
-      right: 0;
-      bottom: 0;           /* 右下に配置 */
-      width: 200px;        /* お好みのサイズに調整してください */
-      height: auto;
-      z-index: -1;         /* テキストの後ろ（最背面）に配置 */
-      pointer-events: none;/* マウス操作を邪魔しない設定 */
-      opacity: 0.8;        /* なじませるための透明度（お好みで調整） */
     }
   </style>
 </head>
@@ -271,9 +282,7 @@
       <input type="hidden" name="_subject" value="【TABATAWORKS】WEBサイトよりお問い合わせ">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
-      <!-- 送信完了後のリダイレクト先URLを設定（必要に応じて変更してください） -->
       <input type="hidden" name="_next" value="https://tabataworks.com/thanks.html">
-      <!-- 添付有無を裏側で管理する隠しデータ欄 -->
       <input type="hidden" name="添付ファイル" id="field-attachment-flag" value="なし">
 
       <div class="form-header">
@@ -333,7 +342,6 @@
         <textarea id="field-details" class="site-textarea" name="お問い合わせ詳細" required></textarea>
       </div>
 
-      <!-- 見本の添付（Googleフォーム導線） -->
       <div class="form-group">
         <label class="form-label">見本の添付（任意）</label>
         <span class="form-subtext">参考データや画像ファイルを添付して送信されたい場合は、専用フォーム（Googleフォーム）をご利用ください。</span>
@@ -403,13 +411,11 @@
     item.addEventListener('mouseenter', () => activateItem(item));
   });
 
-  // お問い合わせにホバーした際、他の赤色ハイライトと右側のテキスト表示を解除する処理を追加
   btnOpenContact.addEventListener('mouseenter', () => {
     serviceItems.forEach(i => i.classList.remove('active'));
     descriptions.forEach(d => d.classList.remove('active'));
   });
 
-  // Googleフォームリンクが押されたら「添付ファイル」項目を「あり」へ自動変更
   const gformBtn = document.getElementById('gform-btn');
   const attachmentFlag = document.getElementById('field-attachment-flag');
 
