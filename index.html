@@ -144,20 +144,21 @@
       .service-list, .description-display { width: 100%; }
       footer { margin-top: 40px; justify-content: flex-end; }
     }
-    /* 説明文の親要素の位置指定を確実にする */
+    /* 説明文の親要素の位置指定基準を設定 */
     .description-text {
-      position: relative; /* 子要素の絶対配置の基準にする */
+      position: relative; /* 絶対配置の基準位置 */
     }
 
-    /* 右下に配置する冊子アイコンのスタイル */
+    /* 冊子アイコンを最背面・右下に絶対配置 */
     .desc-icon {
       position: absolute;
       right: 0;
-      bottom: -20px; /* テキストとの間隔に合わせて調整してください */
-      width: 200px;   /* お好みのサイズに調整してください */
+      bottom: 0;           /* 右下に配置 */
+      width: 200px;        /* お好みのサイズに調整してください */
       height: auto;
-      opacity: 0.8;  /* 周りのデザインになじませる透過度（お好みで） */
-      pointer-events: none;
+      z-index: -1;         /* テキストの後ろ（最背面）に配置 */
+      pointer-events: none;/* マウス操作を邪魔しない設定 */
+      opacity: 0.8;        /* なじませるための透明度（お好みで調整） */
     }
   </style>
 </head>
