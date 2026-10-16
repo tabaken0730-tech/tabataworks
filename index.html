@@ -260,7 +260,7 @@
         <img src="book-icon.png" alt="冊子アイコン" class="desc-icon">
       </p>
       <p id="desc-2" class="description-text">
-        学会や研究会、各種イベントの準備段階から開催後まで運営のお手伝いをいたします。<br>開催案内や特設WEBサイトの立ち上げ、プログラム・要旨集の作成はもちろん、会場の看板設置、参加証の準備、ポスターセッション用パネルのレンタル手配まで、必要な業務をまとめて引き受けます。<br>※対応エリア：仙台市内近郊
+        学会や研究会、各種イベントの準備段階から開催後まで運営のお手伝いをいたします。<br>開催案内や特設WEBサイトの立ち上げ、プログラム・要旨集の作成はもちろん、会場の看板設置、参加証の準備、ポスターセッション用パネルのレンタル手配まで、必要な業務をまとめて引き受けます。<br>※対応エリア：仙台市近郊
         <img src="event-icon.png" alt="学会・イベントアイコン" class="desc-icon">
       </p>
       <p id="desc-3" class="description-text">
@@ -298,7 +298,7 @@
 
       <div class="form-group">
         <label class="form-label">お問合せ内容 <span class="req">*</span></label>
-        <span class="form-subtext">※学会・イベントは仙台市内の会場に限られますのでご了承ください。</span>
+        <span class="form-subtext">※学会・イベントは仙台市近郊の会場に限られますのでご了承ください。</span>
         <div class="checkbox-group">
           <label class="checkbox-label">
             <input type="checkbox" name="お問合せ内容" value="印刷・製本"> 印刷・製本
@@ -414,17 +414,35 @@
     item.addEventListener('mouseenter', () => activateItem(item));
   });
 
+  // お問い合わせにホバーした際、他の赤色ハイライトと右側のテキスト表示を解除
   btnOpenContact.addEventListener('mouseenter', () => {
     serviceItems.forEach(i => i.classList.remove('active'));
     descriptions.forEach(d => d.classList.remove('active'));
   });
 
+  // Googleフォームリンクが押されたら「添付ファイル」項目を「あり」へ自動変更
   const gformBtn = document.getElementById('gform-btn');
   const attachmentFlag = document.getElementById('field-attachment-flag');
 
   if (gformBtn && attachmentFlag) {
     gformBtn.addEventListener('click', function() {
       attachmentFlag.value = 'あり（Googleフォーム移動）';
+    });
+  }
+
+  // ★「お問合せ内容」チェックボックスの必須チェック
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      const checkedCategories = document.querySelectorAll('input[name="お問合せ内容"]:checked');
+      if (checkedCategories.length === 0) {
+        e.preventDefault();
+        alert('「お問合せ内容」を1つ以上選択してください。');
+        const categoryGroup = document.querySelector('.checkbox-group');
+        if (categoryGroup) {
+          categoryGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
     });
   }
 </script>
