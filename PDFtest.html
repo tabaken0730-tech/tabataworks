@@ -7,7 +7,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #333; /* 背景をダークにしてノートを引き立たせる */
+            background-color: #333;
             background-image: radial-gradient(#444 20%, transparent 20%), radial-gradient(#444 20%, transparent 20%);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
@@ -19,23 +19,20 @@
             font-family: sans-serif;
         }
 
-        /* ノートを配置するコンテナ */
         .notebook-container {
             position: relative;
             width: 90vw;
             height: 85vh;
             max-width: 1200px;
             max-height: 800px;
-            visibility: hidden; /* 読み込み完了まで隠す */
+            visibility: hidden;
         }
 
-        /* 各ページ（Canvas）のスタイル */
         .page {
             background-color: white;
-            box-shadow: inset 5px 0 10px rgba(0,0,0,0.1); /* 見開きの影 */
+            box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
         }
 
-        /* 読み込み中のローディング表示 */
         #loading {
             position: absolute;
             color: white;
@@ -46,75 +43,61 @@
 <body>
 
     <div id="loading">ノートを開いています...</div>
-
-    <!-- 本（ノート）の土台となる要素 -->
     <div id="notebook" class="notebook-container"></div>
 
-    <!-- ① PDF.js 本体と、めくりライブラリ(Page-Flip)を読み込む -->
-    <script src="https://unpkg.com"></script>
-    <script src="https://jsdelivr.net"></script>
+    <!-- 外部通信は一切せず、ご自身のサーバーに保存したファイルを読み込みます -->
+    <script src="./build/pdf.mjs" type="module"></script>
+    <!-- 先ほどステップ1でダウンロードしてアップしたファイルのパスを指定します -->
+    <script src="./page-flip.browser.js"></script>
 
-    <script>
-        // PDF.jsのWorker設定（すでにあるローカルのパスを指定）
-        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+    <script type="module">
+        import * as pdfjsLib from './build/pdf.mjs';
         pdfjsLib.GlobalWorkerOptions.workerSrc = './build/pdf.worker.mjs';
 
-        // 表示したいPDFのパス
+        // 表示したいPDFのパス（HTMLと同じ階層にある場合）
         const pdfUrl = './th69_pro.pdf'; 
 
-        // ノートの基本サイズ（PDFの比率に合わせて自動調整されます）
         let bookWidth = 500;
         let bookHeight = 700;
 
         async function initNotebook() {
             try {
-                // 1. PDFドキュメントの読み込み
                 const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
                 const notebookElement = document.getElementById('notebook');
                 
-                // 1ページ目のサイズを基準にしてノートの縦横比を計算
                 const firstPage = await pdf.getPage(1);
                 const viewport = firstPage.getViewport({ scale: 1.0 });
                 const ratio = viewport.height / viewport.width;
                 
-                // 画面サイズに合わせてノートの大きさを決定
                 bookWidth = Math.min(500, window.innerWidth / 2 - 40);
                 bookHeight = bookWidth * ratio;
 
-                // 2. すべてのページをCanvasとして作成し、HTMLに追加
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
-                    
-                    // ページ用のコンテナ
                     const pageDiv = document.createElement('div');
                     pageDiv.className = 'page';
                     
-                    // Canvasの作成
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     
-                    // 高精細に描画するためのスケール計算
                     const scale = 2.0; 
                     const vp = page.getViewport({ scale: scale });
                     canvas.width = vp.width;
                     canvas.height = vp.height;
                     
-                    // 画面表示用のCSSサイズ
                     canvas.style.width = '100%';
                     canvas.style.height = '100%';
                     
                     pageDiv.appendChild(canvas);
                     notebookElement.appendChild(pageDiv);
 
-                    // レンダリング実行
                     await page.render({ canvasContext: ctx, viewport: vp }).promise;
                 }
 
-                // ローディングを消してコンテナを表示
                 document.getElementById('loading').style.display = 'none';
                 notebookElement.style.visibility = 'visible';
 
-                // 3. めくりライブラリ「Page-Flip」の起動
+                // めくりライブラリの起動
                 const pageFlip = new St.PageFlip(notebookElement, {
                     width: bookWidth,
                     height: bookHeight,
@@ -123,12 +106,11 @@
                     maxWidth: bookWidth * 2,
                     minHeight: bookHeight,
                     maxHeight: bookHeight,
-                    drawShadow: true, // めくる時の影エフェクト
-                    usePortrait: false, // 画面が狭くても強制的に見開きにする
+                    drawShadow: true,
+                    usePortrait: false,
                     startPage: 0
                 });
 
-                // HTML要素を元にアルバム・本を組み立て
                 pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
             } catch (error) {
@@ -137,7 +119,6 @@
             }
         }
 
-        // 起動
         initNotebook();
     </script>
 </body>
