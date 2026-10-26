@@ -55,7 +55,7 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = './build/pdf.worker.mjs';
 
         // 表示したいPDFのパス（HTMLと同じ階層にある場合）
-        const pdfUrl = 'th69_pro.pdf'; 
+        const pdfUrl = new URL('./th69_pro.pdf', import.meta.url).href; 
 
         let bookWidth = 500;
         let bookHeight = 700;
