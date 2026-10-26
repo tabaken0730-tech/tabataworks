@@ -8262,4 +8262,17 @@ dialog :link {
   #scaleSelectContainer {
     display: none;
   }
+/* ビューワー全体の背景をグレーから「ノート・本」が映える木目調（またはお好みの色）に変える */
+#viewerContainer {
+    background-color: #e6dbcb !important; /* 温かみのあるクラフト紙・生成り色 */
+    /* もし木目の画像などがあれば以下のように指定もできます */
+    /* background-image: url('images/wood-texture.jpg') !important; */
+}
+
+/* PDFのページ自体に、ノートの影（立体感）をつける */
+.page {
+    border: 1px solid #ccc !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+    margin: 20px auto !important;
+}
 }
